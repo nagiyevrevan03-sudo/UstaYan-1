@@ -1,0 +1,5 @@
+window.APP_CONFIG = {
+    BOT_TOKEN: '',
+    ADMIN_CHAT_ID: '1220901296',
+    PAYMENT_NUMBER: '+994702452400'
+};
