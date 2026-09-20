@@ -6,9 +6,8 @@
     <title>UstaYanı • Telegram Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- ✅ KONFİQURASİYA FAYLLARI - BUNLAR MÜTLƏQ <script> BLOKLARINDAN ƏVVƏL OLMALIDIR -->
-    <script src="config.js"></script>
-    <script src="config.local.js" onerror="console.log('ℹ️ config.local.js tapılmadı - boş token istifadə olunur')"></script>
+    <script src="config.js" onerror="console.log('config.js tapılmadı')"></script>
+    <script src="config.local.js" onerror="console.log('ℹ️ config.local.js tapılmadı')"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
@@ -18,69 +17,47 @@
 
         :root {
             --tg-theme-bg-color: #ffffff;
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #dbeafe;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray-50: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --gray-700: #334155;
-            --gray-800: #1e293b;
-            --radius: 16px;
-            --radius-sm: 12px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+            --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
+            --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b;
+            --radius: 16px; --radius-sm: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05); --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
-        .app-header {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
-            color: white; padding: 16px 20px; padding-top: max(16px, env(safe-area-inset-top));
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 50; border-radius: 0 0 24px 24px; box-shadow: var(--shadow);
-        }
+        .app-header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 16px 20px; padding-top: max(16px, env(safe-area-inset-top)); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; border-radius: 0 0 24px 24px; box-shadow: var(--shadow); }
         .logo-area { display: flex; align-items: center; gap: 10px; }
         .logo-icon { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; backdrop-filter: blur(4px); }
-        .logo-text { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+        .logo-text { font-weight: 700; font-size: 20px; }
         .logo-text span { font-weight: 400; opacity: 0.9; }
         .header-actions { display: flex; gap: 12px; }
-        .header-actions button { background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 40px; height: 40px; border-radius: 12px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: background 0.2s; position: relative; }
-        .header-actions button:hover { background: rgba(255, 255, 255, 0.25); }
+        .header-actions button { background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 40px; height: 40px; border-radius: 12px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
         .notif-badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
 
         .main-content { padding: 16px 16px 24px; }
-
         .search-bar { background: var(--tg-theme-bg-color); border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow); margin-bottom: 16px; border: 1px solid var(--gray-200); }
         .search-bar i { color: var(--gray-400); font-size: 18px; }
         .search-bar input { border: none; outline: none; flex: 1; font-size: 15px; background: transparent; color: inherit; }
-        .search-bar input::placeholder { color: var(--gray-400); }
 
-        .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; }
         .filter-row::-webkit-scrollbar { display: none; }
-        .chip { background: var(--tg-theme-bg-color); border: 1px solid var(--gray-200); border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; transition: all 0.2s; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
+        .chip { background: var(--tg-theme-bg-color); border: 1px solid var(--gray-200); border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
         .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .chip i { font-size: 12px; }
 
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px; }
         .section-header h3 { font-size: 17px; font-weight: 600; }
         .section-header a { font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 500; }
 
         .job-list { display: flex; flex-direction: column; gap: 12px; }
-
-        .job-card { background: var(--tg-theme-bg-color); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); transition: transform 0.15s; position: relative; overflow: hidden; cursor: pointer; }
+        .job-card { background: var(--tg-theme-bg-color); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); cursor: pointer; position: relative; overflow: hidden; }
         .job-card:active { transform: scale(0.98); }
-        .job-card .badge { position: absolute; top: 12px; right: 12px; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .job-card .badge { position: absolute; top: 12px; right: 12px; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
         .badge-vip { background: #fef3c7; color: #d97706; }
         .badge-pro { background: #ede9fe; color: #7c3aed; }
         .badge-urgent { background: #fee2e2; color: #dc2626; }
         .badge-paid { background: #d1fae5; color: #059669; }
         .badge-expired { background: #fee2e2; color: #dc2626; }
+        .badge-free { background: #dbeafe; color: #2563eb; }
 
         .job-title { font-weight: 600; font-size: 16px; padding-right: 60px; margin-bottom: 8px; }
         .job-location { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray-500); margin-bottom: 8px; flex-wrap: wrap; }
@@ -91,8 +68,7 @@
         .job-time { font-size: 12px; color: var(--gray-400); display: flex; align-items: center; gap: 4px; }
         .job-actions { display: flex; gap: 8px; }
 
-        .btn-icon { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--gray-200); background: var(--tg-theme-bg-color); color: var(--gray-600); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 14px; }
-        .btn-icon:hover { background: var(--gray-100); }
+        .btn-icon { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--gray-200); background: var(--tg-theme-bg-color); color: var(--gray-600); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
         .btn-icon.primary { background: var(--primary); color: white; border-color: var(--primary); }
         .btn-icon.locked { background: #fef3c7; color: #d97706; border-color: #fde68a; }
 
@@ -100,46 +76,42 @@
         .stars .empty { color: var(--gray-300); }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--tg-theme-bg-color); border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; padding: 8px 0; padding-bottom: max(8px, env(safe-area-inset-bottom)); z-index: 100; box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04); border-radius: 20px 20px 0 0; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; color: var(--gray-400); font-size: 11px; font-weight: 500; cursor: pointer; padding: 6px 4px; border-radius: 12px; transition: all 0.2s; flex: 1; max-width: 60px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; color: var(--gray-400); font-size: 11px; font-weight: 500; cursor: pointer; padding: 6px 4px; flex: 1; max-width: 60px; }
         .nav-item i { font-size: 20px; }
         .nav-item.active { color: var(--primary); }
-        .nav-item.active i { transform: translateY(-2px); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
         .modal-overlay.active { display: flex; }
         .modal-sheet { background: var(--tg-theme-bg-color); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px 20px; padding-bottom: max(24px, env(safe-area-inset-bottom)); animation: slideUp 0.3s ease; max-height: 90vh; overflow-y: auto; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .modal-header h2 { font-size: 20px; font-weight: 700; }
-        .modal-close { background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-600); font-size: 16px; }
+        .modal-close { background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-600); }
 
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 15px; background: var(--tg-theme-bg-color); color: inherit; outline: none; transition: border 0.2s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+        .form-input, .form-textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 15px; background: var(--tg-theme-bg-color); color: inherit; outline: none; }
+        .form-input:focus, .form-textarea:focus { border-color: var(--primary); }
         .form-textarea { min-height: 100px; resize: vertical; }
 
         .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-        .pricing-card { background: var(--gray-100); border-radius: var(--radius-sm); padding: 16px; text-align: center; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
+        .pricing-card { background: var(--gray-100); border-radius: var(--radius-sm); padding: 16px; text-align: center; border: 2px solid transparent; cursor: pointer; }
         .pricing-card.selected { border-color: var(--primary); background: var(--primary-light); }
         .pricing-card .price { font-size: 22px; font-weight: 800; color: var(--primary); margin: 8px 0 4px; }
         .pricing-card .period { font-size: 12px; color: var(--gray-500); }
         .pricing-card .name { font-size: 13px; font-weight: 600; color: var(--gray-700); }
 
-        .btn { width: 100%; padding: 14px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn { width: 100%; padding: 14px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); }
         .btn-outline { background: transparent; border: 2px solid var(--gray-200); color: var(--gray-700); }
-        .btn-outline:hover { background: var(--gray-100); }
         .btn-sm { padding: 10px 16px; font-size: 13px; width: auto; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-success { background: var(--success); color: white; }
 
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: var(--gray-800); color: white; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; z-index: 300; transition: transform 0.3s ease; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; white-space: nowrap; max-width: 90vw; }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: var(--gray-800); color: white; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; z-index: 300; transition: transform 0.3s; display: flex; align-items: center; gap: 8px; }
         .toast.show { transform: translateX(-50%) translateY(0); }
         .toast.success { background: var(--success); }
         .toast.danger { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
 
         .admin-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .stat-card { background: var(--tg-theme-bg-color); border-radius: var(--radius-sm); padding: 16px; border: 1px solid var(--gray-200); }
@@ -151,11 +123,6 @@
         .admin-list-item .info h4 { font-size: 14px; font-weight: 600; }
         .admin-list-item .info p { font-size: 12px; color: var(--gray-500); }
 
-        .payment-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
-        .status-pending { background: #fef3c7; color: #d97706; }
-        .status-approved { background: #d1fae5; color: #059669; }
-        .status-rejected { background: #fee2e2; color: #dc2626; }
-
         .tg-user-info { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--gray-100); border-radius: var(--radius-sm); margin-bottom: 16px; }
         .tg-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
         .tg-user-details h4 { font-size: 15px; font-weight: 600; }
@@ -163,56 +130,55 @@
 
         .empty-state { text-align: center; padding: 40px 20px; color: var(--gray-400); }
         .empty-state i { font-size: 48px; margin-bottom: 16px; color: var(--gray-300); }
-        .empty-state p { font-size: 14px; }
 
-        .tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; }
-        .tabs::-webkit-scrollbar { display: none; }
-        .tab { flex: 1; padding: 10px 12px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--gray-500); border: none; background: transparent; white-space: nowrap; }
-        .tab.active { background: var(--tg-theme-bg-color); color: var(--primary); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+        .tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 16px; }
+        .tab { flex: 1; padding: 10px 12px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; color: var(--gray-500); border: none; background: transparent; }
+        .tab.active { background: var(--tg-theme-bg-color); color: var(--primary); }
 
         .category-group { margin-bottom: 16px; }
         .category-group-title { font-size: 14px; font-weight: 700; color: var(--gray-700); padding: 12px 0 8px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--gray-200); margin-bottom: 8px; }
-        .category-group-title i { color: var(--primary); }
         .category-items { display: flex; flex-wrap: wrap; gap: 6px; }
-        .category-item { background: var(--gray-100); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
-        .category-item:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
-        .category-item.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        .category-item { background: var(--gray-100); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 500; color: var(--gray-600); cursor: pointer; border: 1px solid transparent; }
+        .category-item.selected { background: var(--primary); color: white; }
 
         .payment-info { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; }
         .payment-info i { color: var(--primary); font-size: 20px; margin-top: 2px; }
         .payment-info .text { font-size: 13px; color: var(--gray-700); line-height: 1.5; }
-        .payment-info .text strong { color: var(--primary); }
 
         .paywall { text-align: center; padding: 24px 16px; background: var(--gray-50); border-radius: var(--radius); border: 2px dashed var(--gray-300); margin: 16px 0; }
         .paywall i { font-size: 40px; color: var(--warning); margin-bottom: 12px; }
         .paywall h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
         .paywall p { font-size: 13px; color: var(--gray-500); margin-bottom: 16px; line-height: 1.5; }
 
+        .trial-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
+        .trial-badge.ending { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .trial-badge.expired { background: linear-gradient(135deg, #ef4444, #dc2626); }
         .sub-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-        .sub-badge.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .sub-badge.expired { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .trial-banner { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25); }
+        .trial-banner.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .trial-banner.expired { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .trial-banner i { font-size: 28px; }
+        .trial-banner .text h4 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+        .trial-banner .text p { font-size: 12px; opacity: 0.95; }
 
         .category-scroll { max-height: 400px; overflow-y: auto; padding-right: 4px; }
-        .category-scroll::-webkit-scrollbar { width: 4px; }
-        .category-scroll::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
-
         .expiry-info { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray-500); margin-top: 4px; }
         .expiry-info.warning { color: var(--warning); }
         .expiry-info.danger { color: var(--danger); }
-
         .lock-indicator { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--warning); font-weight: 600; padding: 3px 8px; background: #fef3c7; border-radius: 6px; }
+        .lock-indicator.free { background: #d1fae5; color: #059669; }
 
         .master-info-card { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 1px solid #bae6fd; border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; }
         .master-info-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .master-info-row:last-child { margin-bottom: 0; }
-        .master-info-row i { color: var(--primary); width: 20px; font-size: 16px; }
+        .master-info-row i { color: var(--primary); width: 20px; }
         .master-info-row .label { font-size: 12px; color: var(--gray-500); min-width: 80px; }
         .master-info-row .value { font-size: 14px; font-weight: 600; color: var(--gray-800); flex: 1; }
 
         @media (min-width: 500px) {
             .main-content { max-width: 500px; margin: 0 auto; }
-            .app-header { max-width: 500px; margin: 0 auto; border-radius: 0 0 24px 24px; }
-            .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); border-radius: 20px 20px 0 0; }
+            .app-header { max-width: 500px; margin: 0 auto; }
+            .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); }
         }
     </style>
 </head>
@@ -224,8 +190,8 @@
             <div class="logo-text">Usta<span>Yanı</span></div>
         </div>
         <div class="header-actions">
-            <button id="notificationBtn" title="Bildirişlər"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge" style="display:none;">0</span></button>
-            <button id="profileBtn" title="Profil"><i class="fas fa-user"></i></button>
+            <button id="notificationBtn"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge" style="display:none;">0</span></button>
+            <button id="profileBtn"><i class="fas fa-user"></i></button>
         </div>
     </header>
 
@@ -247,21 +213,18 @@
     <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Əməliyyat uğurlu!</span></div>
 
     <script>
-        // ==================== KONFİQURASİYA (config.js-dən gəlir) ====================
-        // ✅ Artıq token koddan kənardadır!
+        // ==================== KONFİQURASİYA ====================
         const CONFIG = window.APP_CONFIG || {};
         const BOT_TOKEN = CONFIG.BOT_TOKEN || '';
         const ADMIN_TELEGRAM_ID = CONFIG.ADMIN_CHAT_ID || '1220901296';
         const ADMIN_CHAT_ID = ADMIN_TELEGRAM_ID;
         const PAYMENT_NUMBER = CONFIG.PAYMENT_NUMBER || '+994702452400';
+        const JSONBIN_API_KEY = CONFIG.JSONBIN_API_KEY || '';
+        const JSONBIN_BIN_ID = CONFIG.JSONBIN_BIN_ID || '';
 
-        // Token yoxlanışı - konsolda xəbərdarlıq
-        if (!BOT_TOKEN) {
-            console.warn('⚠️ BOT_TOKEN təyin olunmayıb. Telegram bildirişləri işləməyəcək.');
-            console.warn('ℹ️ config.local.js faylını yaradın və tokeni ora yazın.');
-        } else {
-            console.log('✅ BOT_TOKEN uğurla yükləndi');
-        }
+        const CLOUD_ENABLED = !!(JSONBIN_API_KEY && JSONBIN_BIN_ID);
+        if (CLOUD_ENABLED) console.log('☁️ JSONBin aktiv');
+        else console.warn('⚠️ JSONBin təyin olunmayıb — yalnız localStorage');
 
         // ==================== Telegram WebApp ====================
         const tg = window.Telegram?.WebApp;
@@ -280,60 +243,132 @@
         const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
         const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
         const JOB_EXPIRY_MS = 14 * 24 * 60 * 60 * 1000;
+        const TRIAL_MS = 14 * 24 * 60 * 60 * 1000; // 🎁 14 GÜN PULSUZ
 
         const CATEGORIES = {
-            "🧱 Tikinti işləri": ["Fəhlə","Köməkçi fəhlə","Usta köməkçisi","Betonçu","Armaturçu","Hörgü ustası","Kərpic ustası","Suvaqçı","Şpaklyovka ustası","Alçıpan ustası","Kafel ustası","Metlax ustası","Döşəmə ustası","Dam ustası","Bənna","Söküntü fəhləsi","Yükdaşıyan fəhlə","Tikinti materialı daşıyan"],
-            "🔧 Təmir işləri": ["Santexnik","Elektrik ustası","Qaz ustası","Kondisioner ustası","Kombi ustası","Qapı ustası","Pəncərə ustası","Mebel ustası","Dülgər","Boya ustası","Divar kağızı ustası","Alçı ustası","Laminat ustası","Parket ustası","Fasada ustası","İzolyasiya ustası","Dam təmiri ustası"],
-            "👷 Günlük işlər": ["Günlük fəhlə","Yük boşaltma fəhləsi","Yük yükləmə fəhləsi","Köçürmə fəhləsi","Ev əşyalarının daşınması","Tikinti materiallarının daşınması","Anbar fəhləsi","Təmizlik fəhləsi","Tikintidə təmizlik","Həyət təmizləmə","Torpaq qazma","Torpaq daşıma","Ağır əşya qaldırma","Mebel daşıma","Tikinti tullantılarının daşınması"],
-            "🏗️ Texniki və ixtisaslı işlər": ["Qaynaqçı","Dəmirçi","Ekskavator operatoru","JCB operatoru","Kran operatoru","Beton mikser operatoru","Kəsici/operator","Montajçı","Havalandırma ustası","Lift ustası"]
+            "🧱 Tikinti işləri": ["Fəhlə","Köməkçi fəhlə","Betonçu","Armaturçu","Hörgü ustası","Kərpic ustası","Suvaqçı","Şpaklyovka ustası","Alçıpan ustası","Kafel ustası","Metlax ustası","Döşəmə ustası","Dam ustası","Bənna","Söküntü fəhləsi","Yükdaşıyan fəhlə"],
+            "🔧 Təmir işləri": ["Santexnik","Elektrik ustası","Qaz ustası","Kondisioner ustası","Kombi ustası","Qapı ustası","Pəncərə ustası","Mebel ustası","Dülgər","Boya ustası","Divar kağızı ustası","Alçı ustası","Laminat ustası","Parket ustası","Fasada ustası","İzolyasiya ustası"],
+            "👷 Günlük işlər": ["Günlük fəhlə","Yük boşaltma fəhləsi","Köçürmə fəhləsi","Anbar fəhləsi","Təmizlik fəhləsi","Həyət təmizləmə","Torpaq qazma","Mebel daşıma"],
+            "🏗️ Texniki işlər": ["Qaynaqçı","Dəmirçi","Ekskavator operatoru","JCB operatoru","Kran operatoru","Montajçı","Havalandırma ustası"]
         };
-        const DISTRICTS = ["Bakı","Abşeron","Ağcabədi","Ağdam","Ağdaş","Ağstafa","Ağsu","Astara","Babək","Balakən","Bərdə","Beyləqan","Biləsuvar","Cəbrayıl","Cəlilabad","Culfa","Daşkəsən","Füzuli","Gədəbəy","Gəncə","Goranboy","Göyçay","Göygöl","Hacıqabul","Xaçmaz","Xızı","Xocalı","Xocavənd","İmişli","İsmayıllı","Kəlbəcər","Kəngərli","Kürdəmir","Qax","Qazax","Qəbələ","Qobustan","Quba","Qubadlı","Qusar","Laçın","Lerik","Lənkəran","Masallı","Neftçala","Oğuz","Ordubad","Saatlı","Sabirabad","Salyan","Samux","Sədərək","Siyəzən","Şabran","Şahbuz","Şamaxı","Şəmkir","Şəki","Şərur","Şuşa","Tərtər","Tovuz","Ucar","Yardımlı","Yevlax","Zaqatala","Zəngilan","Zərdab","Şirvan","Mingəçevir","Sumqayıt","Naxçıvan"];
+        const DISTRICTS = ["Bakı","Abşeron","Ağdam","Ağdaş","Astara","Balakən","Bərdə","Cəlilabad","Gəncə","Göyçay","Xaçmaz","İsmayıllı","Qəbələ","Quba","Qusar","Lənkəran","Masallı","Mingəçevir","Naxçıvan","Sumqayıt","Şəki","Şəmkir","Şirvan","Yevlax","Zaqatala"];
 
-        // ==================== Database ====================
+        // ==================== DATABASE (JSONBin + localStorage) ====================
         const DB = {
-            users: JSON.parse(localStorage.getItem('ustayan_users') || '[]'),
-            jobs: JSON.parse(localStorage.getItem('ustayan_jobs') || '[]'),
-            messages: JSON.parse(localStorage.getItem('ustayan_messages') || '[]'),
-            payments: JSON.parse(localStorage.getItem('ustayan_payments') || '[]'),
-            reviews: JSON.parse(localStorage.getItem('ustayan_reviews') || '[]'),
-            subscriptions: JSON.parse(localStorage.getItem('ustayan_subscriptions') || '[]'),
-            contacts: JSON.parse(localStorage.getItem('ustayan_contacts') || '[]'),
-            notifications: JSON.parse(localStorage.getItem('ustayan_notifications') || '[]'),
+            users: [], jobs: [], messages: [], payments: [],
+            reviews: [], subscriptions: [], contacts: [], notifications: [],
+            _saving: false, _loading: false,
+
+            async load() {
+                if (this._loading) return;
+                this._loading = true;
+                
+                // Əvvəlcə localStorage-dan yüklə (sürətli başlanğıc)
+                this._loadLocal();
+                
+                // Sonra buluddan yüklə
+                if (CLOUD_ENABLED) {
+                    try {
+                        const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                            headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                        });
+                        const data = await res.json();
+                        const d = data.record || {};
+                        if (d.users) this.users = d.users;
+                        if (d.jobs) this.jobs = d.jobs;
+                        if (d.messages) this.messages = d.messages;
+                        if (d.payments) this.payments = d.payments;
+                        if (d.reviews) this.reviews = d.reviews;
+                        if (d.subscriptions) this.subscriptions = d.subscriptions;
+                        if (d.contacts) this.contacts = d.contacts;
+                        if (d.notifications) this.notifications = d.notifications;
+                        console.log('☁️ Buluddan yükləndi');
+                    } catch(e) {
+                        console.error('❌ Bulud yükləmə xətası:', e);
+                    }
+                }
+                this._loading = false;
+            },
+
+            _loadLocal() {
+                try {
+                    this.users = JSON.parse(localStorage.getItem('uy_users') || '[]');
+                    this.jobs = JSON.parse(localStorage.getItem('uy_jobs') || '[]');
+                    this.messages = JSON.parse(localStorage.getItem('uy_messages') || '[]');
+                    this.payments = JSON.parse(localStorage.getItem('uy_payments') || '[]');
+                    this.reviews = JSON.parse(localStorage.getItem('uy_reviews') || '[]');
+                    this.subscriptions = JSON.parse(localStorage.getItem('uy_subscriptions') || '[]');
+                    this.contacts = JSON.parse(localStorage.getItem('uy_contacts') || '[]');
+                    this.notifications = JSON.parse(localStorage.getItem('uy_notifications') || '[]');
+                } catch(e) { console.error('LocalStorage xətası:', e); }
+            },
 
             save() {
-                localStorage.setItem('ustayan_users', JSON.stringify(this.users));
-                localStorage.setItem('ustayan_jobs', JSON.stringify(this.jobs));
-                localStorage.setItem('ustayan_messages', JSON.stringify(this.messages));
-                localStorage.setItem('ustayan_payments', JSON.stringify(this.payments));
-                localStorage.setItem('ustayan_reviews', JSON.stringify(this.reviews));
-                localStorage.setItem('ustayan_subscriptions', JSON.stringify(this.subscriptions));
-                localStorage.setItem('ustayan_contacts', JSON.stringify(this.contacts));
-                localStorage.setItem('ustayan_notifications', JSON.stringify(this.notifications));
+                // LocalStorage-a dərhal yaz
+                localStorage.setItem('uy_users', JSON.stringify(this.users));
+                localStorage.setItem('uy_jobs', JSON.stringify(this.jobs));
+                localStorage.setItem('uy_messages', JSON.stringify(this.messages));
+                localStorage.setItem('uy_payments', JSON.stringify(this.payments));
+                localStorage.setItem('uy_reviews', JSON.stringify(this.reviews));
+                localStorage.setItem('uy_subscriptions', JSON.stringify(this.subscriptions));
+                localStorage.setItem('uy_contacts', JSON.stringify(this.contacts));
+                localStorage.setItem('uy_notifications', JSON.stringify(this.notifications));
+
+                // Buluda 2 saniyə sonra (debounce)
+                if (!CLOUD_ENABLED) return;
+                if (this._saving) return;
+                this._saving = true;
+                setTimeout(async () => {
+                    try {
+                        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Master-Key': JSONBIN_API_KEY
+                            },
+                            body: JSON.stringify({
+                                users: this.users, jobs: this.jobs,
+                                messages: this.messages, payments: this.payments,
+                                reviews: this.reviews, subscriptions: this.subscriptions,
+                                contacts: this.contacts, notifications: this.notifications
+                            })
+                        });
+                        console.log('☁️ Buluda saxlanıldı');
+                    } catch(e) { console.error('❌ Save xətası:', e); }
+                    this._saving = false;
+                }, 2000);
             },
 
             seed() {
-                if (this.users.length === 0) {
-                    this.users = [
-                        { id: 'u1', name: 'Əli M.', phone: '+994501234567', type: 'employer', banned: false, rating: 4.5, ratingCount: 12, subscriptions: [] },
-                        { id: 'u2', name: 'Rəşad K.', phone: '+994551234567', type: 'master', banned: false, rating: 4.8, ratingCount: 34, subscriptions: [{ plan: 'monthly', status: 'active', expiresAt: Date.now() + MONTH_MS }] },
-                        { id: 'u3', name: 'Nigar H.', phone: '+994701234567', type: 'employer', banned: false, rating: 4.2, ratingCount: 8, subscriptions: [] },
-                        { id: 'u4', name: 'Kamran S.', phone: '+994771234567', type: 'master', banned: false, rating: 4.9, ratingCount: 56, subscriptions: [{ plan: 'weekly', status: 'active', expiresAt: Date.now() + WEEK_MS }] }
-                    ];
-                }
-                if (this.jobs.length === 0) {
-                    const now = Date.now();
-                    this.jobs = [
-                        { id: 'j1', title: 'Santexnik lazımdır', description: 'Mənzildə su kəməri dəyişdirilməlidir. Təcili!', category: 'Santexnik', district: 'Bakı', price: '50 AZN', phone: '+994501234567', type: 'job', urgent: true, vip: false, proVip: false, authorId: 'u1', authorName: 'Əli M.', createdAt: now - 3600000, expiresAt: now - 3600000 + JOB_EXPIRY_MS, status: 'approved' },
-                        { id: 'j2', title: 'Elektrik xidmətləri', description: 'Evdə bütün elektrik işləri görülür. Təcrübəli usta. 10 ildən artıq təcrübə.', category: 'Elektrik ustası', district: 'Bakı', price: '30 AZN/saat', phone: '+994551234567', type: 'master', urgent: false, vip: true, proVip: false, authorId: 'u2', authorName: 'Rəşad K.', createdAt: now - 7200000, expiresAt: now - 7200000 + MONTH_MS, status: 'approved', experience: '10 il', workingHours: '09:00 - 18:00', about: 'Bakı üzrə bütün elektrik işləri. Zəmanət verilir.' },
-                        { id: 'j3', title: 'Təmizlik işçisi lazımdır', description: 'Ofis təmizliyi üçün 2 nəfər tələb olunur.', category: 'Təmizlik fəhləsi', district: 'Sumqayıt', price: '25 AZN', phone: '+994701234567', type: 'job', urgent: false, vip: false, proVip: true, authorId: 'u3', authorName: 'Nigar H.', createdAt: now - 10800000, expiresAt: now - 10800000 + JOB_EXPIRY_MS, status: 'approved' },
-                        { id: 'j4', title: 'Rəngsaz ustası', description: 'Yeni tikilmiş evin divarlarının rənglənməsi. Keyfiyyətli iş zəmanəti.', category: 'Boya ustası', district: 'Gəncə', price: '200 AZN', phone: '+994771234567', type: 'master', urgent: false, vip: false, proVip: false, authorId: 'u4', authorName: 'Kamran S.', createdAt: now - 14400000, expiresAt: now - 14400000 + WEEK_MS, status: 'approved', experience: '15 il', workingHours: '08:00 - 20:00', about: 'Gəncə və ətraf rayonlarda rəngsaz işləri.' }
-                    ];
-                }
+                // Yalnız tam boşdursa nümunə data
+                if (this.users.length > 0 || this.jobs.length > 0) return;
+                const now = Date.now();
+                this.users = [
+                    { id: 'u1', name: 'Əli M.', phone: '+994501234567', type: 'employer', banned: false, rating: 4.5, ratingCount: 12, subscriptions: [], joinedAt: now - 30*24*3600*1000 },
+                    { id: 'u2', name: 'Rəşad K.', phone: '+994551234567', type: 'master', banned: false, rating: 4.8, ratingCount: 34, subscriptions: [{ plan: 'monthly', status: 'active', expiresAt: now + MONTH_MS }], joinedAt: now - 60*24*3600*1000 }
+                ];
+                this.jobs = [
+                    { id: 'j1', title: 'Santexnik lazımdır', description: 'Mənzildə su kəməri dəyişdirilməlidir. Təcili!', category: 'Santexnik', district: 'Bakı', price: '50 AZN', phone: '+994501234567', type: 'job', urgent: true, vip: false, proVip: false, authorId: 'u1', authorName: 'Əli M.', createdAt: now - 3600000, expiresAt: now - 3600000 + JOB_EXPIRY_MS, status: 'approved' },
+                    { id: 'j2', title: 'Elektrik xidmətləri', description: 'Evdə bütün elektrik işləri görülür. Təcrübəli usta.', category: 'Elektrik ustası', district: 'Bakı', price: '30 AZN/saat', phone: '+994551234567', type: 'master', urgent: false, vip: true, proVip: false, authorId: 'u2', authorName: 'Rəşad K.', createdAt: now - 7200000, expiresAt: now - 7200000 + MONTH_MS, status: 'approved', experience: '10 il', workingHours: '09:00 - 18:00' }
+                ];
                 this.save();
+            },
+
+            startPolling() {
+                if (!CLOUD_ENABLED) return;
+                setInterval(async () => {
+                    if (this._saving || this._loading) return;
+                    await this.load();
+                    if (state.currentPage === 'home') renderHome();
+                    else if (state.currentPage === 'jobs') renderJobs();
+                    else if (state.currentPage === 'masters') renderMasters();
+                    else if (state.currentPage === 'messages') renderMessages();
+                    updateNotifBadge();
+                }, 30000);
             }
         };
-        DB.seed();
 
+        // ==================== STATE ====================
         const state = {
             currentPage: 'home',
             currentUser: null,
@@ -343,22 +378,72 @@
             selectedPlan: 'normal',
             selectedCategory: '',
             selectedDistrict: '',
-            appVisible: true
+            appVisible: true,
+            initialized: false
         };
 
-        if (tg?.initDataUnsafe?.user) {
-            const tgUser = tg.initDataUnsafe.user;
-            state.currentUser = { id: tgUser.id.toString(), name: tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : ''), username: tgUser.username, phone: null, type: 'user', banned: false, rating: 0, ratingCount: 0, subscriptions: [] };
-            const existing = DB.users.find(u => u.id === state.currentUser.id);
-            if (!existing) { DB.users.push(state.currentUser); DB.save(); }
-            else state.currentUser = existing;
-        } else {
-            state.currentUser = DB.users[0];
+        // ==================== 🎁 TRIAL FUNKSİYALARI ====================
+        
+        // İstifadəçinin qoşulma tarixini təyin et (ilk dəfə)
+        function ensureUserJoinedAt(user) {
+            if (!user.joinedAt) {
+                user.joinedAt = Date.now();
+                DB.save();
+            }
+            return user;
         }
 
-        if (state.currentUser.id === ADMIN_TELEGRAM_ID) state.isAdmin = true;
+        // Trial bitmə vaxtı
+        function getTrialExpiry(user) {
+            if (!user.joinedAt) return 0;
+            return user.joinedAt + TRIAL_MS;
+        }
 
-        // ==================== Helpers ====================
+        // Trial aktivdir?
+        function isTrialActive(user) {
+            if (!user || !user.joinedAt) return false;
+            return Date.now() < getTrialExpiry(user);
+        }
+
+        // Trial bitib?
+        function isTrialExpired(user) {
+            if (!user || !user.joinedAt) return false;
+            return Date.now() >= getTrialExpiry(user);
+        }
+
+        // Trial qalan günlər
+        function getTrialDaysLeft(user) {
+            if (!user || !user.joinedAt) return 0;
+            const rem = getTrialExpiry(user) - Date.now();
+            if (rem <= 0) return 0;
+            return Math.ceil(rem / (24 * 60 * 60 * 1000));
+        }
+
+        // İstifadəçi pulsuz rejimdədir? (trial aktiv VƏ abunə yoxdur)
+        function isInFreeTrial(user) {
+            if (!user) return false;
+            if (hasActiveSubscription(user)) return false;
+            return isTrialActive(user);
+        }
+
+        // İstifadəçi premium? (abunə var VƏ YA trial aktiv)
+        function isPremium(user) {
+            if (!user) return false;
+            return hasActiveSubscription(user) || isTrialActive(user);
+        }
+
+        // İstifadəçinin trial-ını başlat (yeni istifadəçi üçün)
+        function startTrialForUser(user) {
+            if (!user.joinedAt) {
+                user.joinedAt = Date.now();
+                DB.save();
+                console.log('🎁 Trial başladı:', user.name);
+                sendNotification(user.id, '🎁 14 GÜN PULSUZ!', 
+                    'Xoş gəldiniz! İlk 14 gün ərzində bütün xidmətlər pulsuzdur. Elan verə, usta tapа, əlaqə saxlaya bilərsiniz.');
+            }
+        }
+
+        // ==================== HELPERS ====================
         function showToast(msg, type = 'success') {
             const t = document.getElementById('toast');
             document.getElementById('toastMessage').textContent = msg;
@@ -370,33 +455,28 @@
             if (m < 1) return 'İndi'; if (m < 60) return m+' dəq əvvəl'; if (h < 24) return h+' saat əvvəl'; return days+' gün əvvəl';
         }
         function formatDate(ts) {
-            const d = new Date(ts);
-            return d.toLocaleDateString('az-AZ', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+            return new Date(ts).toLocaleDateString('az-AZ', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
         }
-        function renderStars(r) { let h=''; for(let i=1;i<=5;i++) h+=`<i class="fas fa-star${i<=Math.round(r)?'':' empty'}"></i>`; return h; }
+        function renderStars(r) { let h=''; for(let i=1;i<=5;i++) h+=`<i class="fas fa-star${i<=Math.round(r||0)?'':' empty'}"></i>`; return h; }
         function getCategoryIcon(c) {
             if (!c) return 'fa-tag';
-            if (c.includes('Fəhlə')||c.includes('fəhlə')||c.includes('Betonçu')||c.includes('Armatur')) return 'fa-hard-hat';
-            if (c.includes('Elektrik')) return 'fa-bolt';
-            if (c.includes('Santexnik')||c.includes('Qaz')) return 'fa-wrench';
-            if (c.includes('Boya')||c.includes('Rəng')) return 'fa-paint-roller';
-            if (c.includes('Təmizlik')||c.includes('təmizlik')) return 'fa-broom';
-            if (c.includes('Qaynaq')) return 'fa-fire';
-            if (c.includes('Kran')||c.includes('Ekskavator')||c.includes('JCB')) return 'fa-truck';
-            if (c.includes('Daşı')||c.includes('Yük')) return 'fa-boxes';
-            if (c.includes('Kafel')||c.includes('Metlax')) return 'fa-th-large';
+            try {
+                if (c.includes('Fəhlə')||c.includes('Betonçu')||c.includes('Armatur')) return 'fa-hard-hat';
+                if (c.includes('Elektrik')) return 'fa-bolt';
+                if (c.includes('Santexnik')||c.includes('Qaz')) return 'fa-wrench';
+                if (c.includes('Boya')||c.includes('Rəng')) return 'fa-paint-roller';
+                if (c.includes('Təmizlik')) return 'fa-broom';
+                if (c.includes('Qaynaq')) return 'fa-fire';
+                if (c.includes('Kran')||c.includes('Ekskavator')) return 'fa-truck';
+                if (c.includes('Daşı')||c.includes('Yük')) return 'fa-boxes';
+            } catch(e) {}
             return 'fa-tag';
         }
         function getActiveSubscription(user) {
             if (!user || !user.subscriptions || !user.subscriptions.length) return null;
-            const now = Date.now();
-            return user.subscriptions.find(s => s.status === 'active' && s.expiresAt > now);
+            return user.subscriptions.find(s => s.status === 'active' && s.expiresAt > Date.now());
         }
-        function isUserMaster(user) {
-            if (!user) return false;
-            if (user.type === 'master') return true;
-            return false;
-        }
+        function isUserMaster(user) { return user?.type === 'master'; }
         function hasActiveSubscription(user) { return !!getActiveSubscription(user); }
         function hasPaidContact(userId, jobId) { return DB.contacts.find(c => c.userId === userId && c.jobId === jobId && c.status === 'approved'); }
         function isExpired(job) { return job.expiresAt && job.expiresAt < Date.now(); }
@@ -411,72 +491,55 @@
             return { text: 'Tezliklə bitir', cls: 'danger' };
         }
 
+        // ✅ YENİ: İstifadəçi elana baxa bilər? (Premium = abunə VƏ YA trial)
         function canViewJobElan(user, job) {
             if (!user) return false;
             if (job.authorId === user.id) return true;
             if (user.type === 'employer') return true;
-            const sub = getActiveSubscription(user);
-            if (sub) return true;
+            if (isPremium(user)) return true;
             return false;
         }
 
+        // ✅ YENİ: Əlaqə üçün ödəniş lazımdır? (trial varsa yox)
         function needsContactPayment(user, job) {
             if (!user || !job) return false;
             if (job.authorId === user.id) return false;
-            if (hasActiveSubscription(user)) return false;
+            if (isPremium(user)) return false;  // premium = abunə VƏ YA trial
             if (isUserMaster(user)) return false;
             if (hasPaidContact(user.id, job.id)) return false;
-            if (job.type === 'master') return true;
             if (job.type === 'job' && user.type === 'employer') return false;
             return true;
         }
 
-        // ==================== Telegram Bot Bildiriş ====================
+        // ==================== Telegram Bot ====================
         async function sendTelegramBotNotification(chatId, message) {
-            if (!BOT_TOKEN) {
-                console.log('ℹ️ Bot token yoxdur, bildiriş göndərilmədi:', message);
-                return;
-            }
+            if (!BOT_TOKEN) return;
             try {
-                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
                 });
-                const data = await res.json();
-                if (!data.ok) console.error('Bot xətası:', data.description);
-            } catch (e) {
-                console.error('Bot bildiriş xətası:', e);
-            }
+            } catch (e) { console.error('Bot xətası:', e); }
         }
-
         function sendNotification(userId, title, body, type = 'info') {
-            DB.notifications.push({ id: 'n' + Date.now() + '_' + userId, userId, title, body, read: false, createdAt: Date.now(), type });
+            DB.notifications.push({ id: 'n' + Date.now() + '_' + Math.random().toString(36).substr(2,5), userId, title, body, read: false, createdAt: Date.now(), type });
             DB.save();
-            if (!state.appVisible || document.hidden) {
-                sendTelegramBotNotification(userId, `<b>${title}</b>\n\n${body}`);
-            }
+            if (!state.appVisible || document.hidden) sendTelegramBotNotification(userId, `<b>${title}</b>\n\n${body}`);
         }
-
         function sendAdminNotification(title, body) {
             DB.notifications.push({ id: 'n' + Date.now() + '_admin', userId: ADMIN_TELEGRAM_ID, title, body, read: false, createdAt: Date.now(), type: 'admin' });
             DB.save();
-            if (!state.appVisible || document.hidden) {
-                sendTelegramBotNotification(ADMIN_CHAT_ID, `<b>${title}</b>\n\n${body}`);
-            }
+            if (!state.appVisible || document.hidden) sendTelegramBotNotification(ADMIN_CHAT_ID, `<b>${title}</b>\n\n${body}`);
         }
-
         function sendNotificationToMasters(job) {
-            const masters = DB.users.filter(u => hasActiveSubscription(u) && !u.banned);
-            masters.forEach(master => {
+            DB.users.filter(u => isPremium(u) && !u.banned).forEach(master => {
                 sendNotification(master.id, '🔔 Yeni iş elanı!', `${job.district} rayonunda "${job.title}" - ${job.price}`, 'new_job');
             });
         }
-
         function getUnreadNotifications(userId) { return DB.notifications.filter(n => n.userId === userId && !n.read); }
         function updateNotifBadge() {
             const badge = document.getElementById('notifBadge');
-            if (!badge) return;
+            if (!badge || !state.currentUser) return;
             const count = getUnreadNotifications(state.currentUser.id).length;
             if (count > 0) { badge.style.display = 'flex'; badge.textContent = count > 9 ? '9+' : count; }
             else badge.style.display = 'none';
@@ -487,7 +550,7 @@
             const notifs = DB.notifications.filter(n => n.userId === state.currentUser.id).sort((a,b) => b.createdAt - a.createdAt);
             openModal(`
                 <div class="modal-header">
-                    <h2>Bildirişlər ${notifs.filter(n=>!n.read).length > 0 ? '(' + notifs.filter(n=>!n.read).length + ' yeni)' : ''}</h2>
+                    <h2>Bildirişlər ${notifs.filter(n=>!n.read).length > 0 ? '(' + notifs.filter(n=>!n.read).length + ')' : ''}</h2>
                     <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
                 </div>
                 ${notifs.length === 0 ? `<div class="empty-state"><i class="fas fa-bell-slash"></i><p>Bildiriş yoxdur</p></div>` : notifs.map(n => `
@@ -503,12 +566,51 @@
             `);
         }
 
-        // ==================== Render: Home ====================
+        // ==================== 🎁 TRIAL BANNER ====================
+        function renderTrialBanner() {
+            const user = state.currentUser;
+            if (!user) return '';
+            
+            // Abunə varsa trial banner göstərmə
+            if (hasActiveSubscription(user)) {
+                const sub = getActiveSubscription(user);
+                return `<div class="trial-banner" style="background:linear-gradient(135deg,#10b981,#059669);">
+                    <i class="fas fa-crown"></i>
+                    <div class="text">
+                        <h4>Aktiv abunəlik: ${sub.plan==='monthly'?'Aylıq':'Həftəlik'}</h4>
+                        <p>Bitir: ${formatDate(sub.expiresAt)}</p>
+                    </div>
+                </div>`;
+            }
+            
+            // Trial bitibsə
+            if (isTrialExpired(user)) {
+                return `<div class="trial-banner expired">
+                    <i class="fas fa-hourglass-end"></i>
+                    <div class="text">
+                        <h4>Pulsuz müddət bitdi</h4>
+                        <p>Davam etmək üçün abunəlik alın</p>
+                    </div>
+                </div>`;
+            }
+            
+            // Trial aktivdirsə
+            const daysLeft = getTrialDaysLeft(user);
+            const cls = daysLeft <= 3 ? 'warning' : '';
+            return `<div class="trial-banner ${cls}">
+                <i class="fas fa-gift"></i>
+                <div class="text">
+                    <h4>🎁 ${daysLeft} gün pulsuz!</h4>
+                    <p>Bütün xidmətlər pulsuz — elan ver, əlaqə saxla</p>
+                </div>
+            </div>`;
+        }
+
+        // ==================== RENDER: Home ====================
         function renderHome() {
             const content = document.getElementById('mainContent');
             const user = state.currentUser;
-            const userIsMaster = isUserMaster(user);
-            const userHasSub = hasActiveSubscription(user);
+            const premium = isPremium(user);
 
             let jobs = DB.jobs.filter(j => j.status === 'approved' && !isExpired(j));
             if (state.filters.type !== 'all') jobs = jobs.filter(j => j.type === state.filters.type);
@@ -529,11 +631,12 @@
             });
 
             const jobElans = jobs.filter(j => j.type === 'job');
-            const hiddenJobElans = (!userIsMaster || !userHasSub) && user.type !== 'employer'
+            const hiddenJobElans = (!premium && user.type !== 'employer')
                 ? jobElans.filter(j => !canViewJobElan(user, j)).length 
                 : 0;
 
             content.innerHTML = `
+                ${renderTrialBanner()}
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Usta, iş və ya xidmət axtar..." id="searchInput">
@@ -553,7 +656,7 @@
                         <i class="fas fa-lock" style="color:#d97706;"></i>
                         <div class="text" style="color:#92400e;">
                             <strong>${hiddenJobElans} iş elanı gizlədilib.</strong><br>
-                            İş elanlarını görmək üçün usta abunəliyi tələb olunur.
+                            Abunəlik tələb olunur.
                         </div>
                     </div>
                 ` : ''}
@@ -566,11 +669,14 @@
                 </div>
             `;
 
-            document.getElementById('searchInput')?.addEventListener('input', (e) => {
-                const q = e.target.value.toLowerCase();
-                const filtered = visibleJobs.filter(j => j.title.toLowerCase().includes(q) || j.description.toLowerCase().includes(q) || j.category.toLowerCase().includes(q) || j.district.toLowerCase().includes(q));
-                document.getElementById('jobList').innerHTML = filtered.length === 0 ? `<div class="empty-state"><i class="fas fa-search"></i><p>Nəticə tapılmadı</p></div>` : filtered.map(job => renderJobCard(job)).join('');
-            });
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase();
+                    const filtered = visibleJobs.filter(j => j.title.toLowerCase().includes(q) || j.description.toLowerCase().includes(q) || j.category.toLowerCase().includes(q) || j.district.toLowerCase().includes(q));
+                    document.getElementById('jobList').innerHTML = filtered.length === 0 ? `<div class="empty-state"><i class="fas fa-search"></i><p>Nəticə tapılmadı</p></div>` : filtered.map(job => renderJobCard(job)).join('');
+                });
+            }
         }
 
         function renderJobCard(job) {
@@ -603,7 +709,7 @@
             const needsPay = needsContactPayment(user, job);
             const paidIndicator = needsPay 
                 ? `<span class="lock-indicator"><i class="fas fa-lock"></i> ${PRICES.CONTACT_FEE} AZN</span>` 
-                : `<span class="lock-indicator" style="background:#d1fae5;color:#059669;"><i class="fas fa-check"></i> Pulsuz</span>`;
+                : `<span class="lock-indicator free"><i class="fas fa-check"></i> Pulsuz</span>`;
 
             return `
                 <div class="job-card" onclick="showJobDetail('${job.id}')">
@@ -663,7 +769,7 @@
                 <div class="paywall">
                     <i class="fas fa-crown" style="color:var(--warning);"></i>
                     <h4>İş elanlarını görmək üçün abunəlik</h4>
-                    <p>Həftəlik: <strong>${PRICES.SUBSCRIPTION_WEEKLY} AZN</strong> • Aylıq: <strong>${PRICES.SUBSCRIPTION_MONTHLY} AZN</strong><br>Ödəniş: <strong>${PAYMENT_NUMBER}</strong> (m10)</p>
+                    <p>Həftəlik: <strong>${PRICES.SUBSCRIPTION_WEEKLY} AZN</strong> • Aylıq: <strong>${PRICES.SUBSCRIPTION_MONTHLY} AZN</strong><br>Ödəniş: <strong>${PAYMENT_NUMBER}</strong></p>
                     <div style="display:flex;gap:8px;">
                         <button class="btn btn-primary" onclick="closeModal();state.selectedPlan='weekly';requestSubscription()">Həftəlik ${PRICES.SUBSCRIPTION_WEEKLY} AZN</button>
                         <button class="btn btn-outline" onclick="closeModal();state.selectedPlan='monthly';requestSubscription()">Aylıq ${PRICES.SUBSCRIPTION_MONTHLY} AZN</button>
@@ -675,8 +781,7 @@
         function renderJobs() {
             const content = document.getElementById('mainContent');
             const user = state.currentUser;
-            const userIsMaster = isUserMaster(user);
-            const userHasSub = hasActiveSubscription(user);
+            const premium = isPremium(user);
 
             let jobs = DB.jobs.filter(j => j.status === 'approved' && j.type === 'job' && !isExpired(j));
             if (state.filters.district) jobs = jobs.filter(j => j.district === state.filters.district);
@@ -689,6 +794,7 @@
             visibleJobs.sort((a,b) => ((b.proVip?3:0)+(b.vip?2:0)+(b.urgent?1:0)) - ((a.proVip?3:0)+(a.vip?2:0)+(a.urgent?1:0)) || b.createdAt - a.createdAt);
 
             content.innerHTML = `
+                ${renderTrialBanner()}
                 <div class="section-header"><h3>📋 İş elanları</h3><span style="font-size:12px;color:var(--gray-500);">${visibleJobs.length} görünən${hiddenCount > 0 ? ', ' + hiddenCount + ' kilidli' : ''}</span></div>
                 ${hiddenCount > 0 ? `
                     <div class="payment-info" style="background:#fef3c7;border-color:#fde68a;">
@@ -705,7 +811,7 @@
                     <div class="chip ${state.filters.urgent?'active':''}" onclick="toggleUrgent()"><i class="fas fa-fire"></i> Təcili</div>
                 </div>
                 <div class="job-list">
-                    ${visibleJobs.length === 0 ? `<div class="empty-state"><i class="fas ${userIsMaster && !userHasSub ? 'fa-lock' : 'fa-inbox'}"></i><p>${userIsMaster && !userHasSub ? 'Abunəlik tələb olunur' : 'Elan tapılmadı'}</p></div>` : visibleJobs.map(job => renderJobCard(job)).join('')}
+                    ${visibleJobs.length === 0 ? `<div class="empty-state"><i class="fas fa-inbox"></i><p>Elan tapılmadı</p></div>` : visibleJobs.map(job => renderJobCard(job)).join('')}
                 </div>
             `;
         }
@@ -721,16 +827,8 @@
             jobs.sort((a,b) => ((b.proVip?3:0)+(b.vip?2:0)) - ((a.proVip?3:0)+(a.vip?2:0)) || b.createdAt - a.createdAt);
 
             content.innerHTML = `
+                ${renderTrialBanner()}
                 <div class="section-header"><h3>🔧 Usta elanları</h3><span style="font-size:12px;color:var(--gray-500);">${jobs.length} usta</span></div>
-                ${jobs.length > 0 && !hasActiveSubscription(user) ? `
-                    <div class="payment-info" style="background:#fef3c7;border-color:#fde68a;">
-                        <i class="fas fa-info-circle" style="color:#d97706;"></i>
-                        <div class="text" style="color:#92400e;">
-                            <strong>Bütün usta məlumatları açıqdır.</strong><br>
-                            Əlaqə saxlamaq üçün <strong>${PRICES.CONTACT_FEE} AZN</strong> ödəniş tələb olunur.
-                        </div>
-                    </div>
-                ` : ''}
                 <div class="filter-row">
                     <div class="chip ${!state.filters.district?'active':''}" onclick="openDistrictFilter()"><i class="fas fa-map-marker-alt"></i> ${state.filters.district || 'Bütün rayonlar'}</div>
                     <div class="chip ${!state.filters.category?'active':''}" onclick="openCategoryFilter()"><i class="fas ${getCategoryIcon(state.filters.category)}"></i> ${state.filters.category || 'Bütün kateqoriyalar'}</div>
@@ -751,7 +849,7 @@
                                         <div class="job-time"><i class="far fa-clock"></i> ${formatTime(job.createdAt)}</div>
                                     </div>
                                     <div class="job-actions">
-                                        ${needsPay ? `<span class="lock-indicator"><i class="fas fa-lock"></i> ${PRICES.CONTACT_FEE} AZN</span>` : `<span class="lock-indicator" style="background:#d1fae5;color:#059669;"><i class="fas fa-check"></i> Pulsuz</span>`}
+                                        ${needsPay ? `<span class="lock-indicator"><i class="fas fa-lock"></i> ${PRICES.CONTACT_FEE} AZN</span>` : `<span class="lock-indicator free"><i class="fas fa-check"></i> Pulsuz</span>`}
                                         <button class="btn-icon ${needsPay?'locked':'primary'}" onclick="event.stopPropagation();handleContact('${job.id}','${job.authorId}')"><i class="fas ${needsPay?'fa-lock':'fa-comment'}"></i></button>
                                     </div>
                                 </div>
@@ -764,21 +862,34 @@
 
         function renderCreate() {
             const content = document.getElementById('mainContent');
+            const user = state.currentUser;
+            const premium = isPremium(user);
+
             if (!state.createMode) {
                 content.innerHTML = `
+                    ${renderTrialBanner()}
                     <div class="section-header"><h3>Nə etmək istəyirsiniz?</h3></div>
+                    ${premium ? `
+                        <div class="payment-info" style="background:#d1fae5;border-color:#10b981;">
+                            <i class="fas fa-check-circle" style="color:#059669;"></i>
+                            <div class="text" style="color:#065f46;">
+                                <strong>✅ Pulsuz rejim aktivdir!</strong><br>
+                                Elanınız dərhal yayımlanacaq, təsdiq gözləməyəcək.
+                            </div>
+                        </div>
+                    ` : ''}
                     <div style="display:flex;flex-direction:column;gap:16px;margin-top:20px;">
                         <div class="job-card" onclick="startCreate('master')" style="text-align:center;padding:32px 20px;">
                             <div style="font-size:48px;margin-bottom:12px;">🔧</div>
                             <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">Mən Ustayam</h3>
                             <p style="font-size:14px;color:var(--gray-500);margin-bottom:16px;">Xidmətlərinizi elan edin</p>
-                            <div class="payment-info" style="text-align:left;margin-bottom:0;"><i class="fas fa-crown"></i><div class="text">Abunəlik: Həftəlik <strong>${PRICES.SUBSCRIPTION_WEEKLY} AZN</strong> • Aylıq <strong>${PRICES.SUBSCRIPTION_MONTHLY} AZN</strong></div></div>
+                            <div class="payment-info" style="text-align:left;margin-bottom:0;"><i class="fas fa-crown"></i><div class="text">${premium ? '<strong>Pulsuz — dərhal yayımlanır</strong>' : `Abunəlik: Həftəlik <strong>${PRICES.SUBSCRIPTION_WEEKLY} AZN</strong> • Aylıq <strong>${PRICES.SUBSCRIPTION_MONTHLY} AZN</strong>`}</div></div>
                         </div>
                         <div class="job-card" onclick="startCreate('employer')" style="text-align:center;padding:32px 20px;">
                             <div style="font-size:48px;margin-bottom:12px;">💼</div>
                             <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">İşə Adam Lazımdır</h3>
                             <p style="font-size:14px;color:var(--gray-500);margin-bottom:16px;">İş elanı yerləşdirin</p>
-                            <div class="payment-info" style="text-align:left;margin-bottom:0;"><i class="fas fa-tag"></i><div class="text">Normal <strong>${PRICES.JOB_NORMAL} AZN</strong> • VIP <strong>${PRICES.JOB_VIP} AZN</strong> • PRO <strong>${PRICES.JOB_PROVIP} AZN</strong></div></div>
+                            <div class="payment-info" style="text-align:left;margin-bottom:0;"><i class="fas fa-tag"></i><div class="text">${premium ? '<strong>Pulsuz — dərhal yayımlanır</strong>' : `Normal <strong>${PRICES.JOB_NORMAL} AZN</strong> • VIP <strong>${PRICES.JOB_VIP} AZN</strong>`}</div></div>
                         </div>
                     </div>
                 `;
@@ -788,26 +899,49 @@
             else renderEmployerCreate();
         }
 
-        function startCreate(mode) { state.createMode = mode; state.selectedCategory = ''; state.selectedDistrict = ''; state.selectedPlan = 'normal'; renderCreate(); }
+        function startCreate(mode) { 
+            state.createMode = mode; 
+            state.selectedCategory = ''; 
+            state.selectedDistrict = ''; 
+            state.selectedPlan = 'normal'; 
+            renderCreate(); 
+        }
 
         function renderMasterCreate() {
             const content = document.getElementById('mainContent');
-            const activeSub = getActiveSubscription(state.currentUser);
+            const user = state.currentUser;
+            const premium = isPremium(user);
+            const activeSub = getActiveSubscription(user);
+            const trialActive = isTrialActive(user);
+
             content.innerHTML = `
                 <div class="section-header">
                     <h3>🔧 Usta elanı</h3>
                     <button class="btn btn-outline btn-sm" onclick="state.createMode=null;renderCreate()"><i class="fas fa-arrow-left"></i> Geri</button>
                 </div>
-                ${!activeSub ? `
-                    <div class="payment-info"><i class="fas fa-crown"></i><div class="text"><strong>Abunəlik tələb olunur.</strong><br>Həftəlik: ${PRICES.SUBSCRIPTION_WEEKLY} AZN • Aylıq: ${PRICES.SUBSCRIPTION_MONTHLY} AZN<br>Ödəniş: <strong>${PAYMENT_NUMBER}</strong></div></div>
+                ${premium ? `
+                    <div class="payment-info" style="background:#d1fae5;border-color:#10b981;">
+                        <i class="fas fa-check-circle" style="color:#059669;"></i>
+                        <div class="text" style="color:#065f46;">
+                            <strong>${activeSub ? '✅ Abunəlik aktiv' : '🎁 Pulsuz sınaq aktiv'}</strong><br>
+                            Elan dərhal yayımlanacaq. Təsdiq gözlənilmir.
+                        </div>
+                    </div>
+                ` : `
+                    <div class="payment-info" style="background:#fef3c7;border-color:#fde68a;">
+                        <i class="fas fa-crown" style="color:#d97706;"></i>
+                        <div class="text" style="color:#92400e;">
+                            <strong>Pulsuz müddət bitdi.</strong><br>
+                            Usta elanı vermək üçün abunəlik lazımdır.<br>
+                            Ödəniş: <strong>${PAYMENT_NUMBER}</strong>
+                        </div>
+                    </div>
                     <div class="pricing-grid">
                         <div class="pricing-card ${state.selectedPlan==='weekly'?'selected':''}" onclick="selectPlan('weekly', this)"><div class="name">Həftəlik</div><div class="price">${PRICES.SUBSCRIPTION_WEEKLY} AZN</div><div class="period">7 gün</div></div>
                         <div class="pricing-card ${state.selectedPlan==='monthly'?'selected':''}" onclick="selectPlan('monthly', this)"><div class="name">Aylıq</div><div class="price">${PRICES.SUBSCRIPTION_MONTHLY} AZN</div><div class="period">30 gün</div></div>
                     </div>
                     <button class="btn btn-primary" onclick="requestSubscription()" style="margin:12px 0;"><i class="fas fa-credit-card"></i> Abunəlik üçün ödəniş et</button>
                     <div style="text-align:center;color:var(--gray-400);font-size:13px;margin:16px 0;">— və ya —</div>
-                ` : `
-                    <div style="margin-bottom:16px;"><span class="sub-badge"><i class="fas fa-crown"></i> Aktiv abunəlik: ${activeSub.plan==='monthly'?'Aylıq':'Həftəlik'}</span><div style="font-size:11px;color:var(--gray-500);margin-top:6px;">Bitir: ${formatDate(activeSub.expiresAt)}</div></div>
                 `}
                 <form id="createForm" onsubmit="submitMasterCreate(event)">
                     <div class="form-group"><label class="form-label">Başlıq</label><input type="text" class="form-input" id="createTitle" required></div>
@@ -819,16 +953,37 @@
                     <div class="form-group"><label class="form-label">İş saatları</label><input type="text" class="form-input" id="createWorkingHours"></div>
                     <div class="form-group"><label class="form-label">Haqqında</label><input type="text" class="form-input" id="createAbout"></div>
                     <div class="form-group"><label class="form-label">Əlaqə nömrəniz</label><input type="tel" class="form-input" id="createPhone" value="${state.currentUser.phone||''}" required></div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Yerləşdir</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> ${premium ? 'Dərhal yayımla' : 'Abunə ol və yerləşdir'}</button>
                 </form>
             `;
         }
 
         function renderEmployerCreate() {
             const content = document.getElementById('mainContent');
+            const user = state.currentUser;
+            const premium = isPremium(user);
+            const activeSub = getActiveSubscription(user);
+
             content.innerHTML = `
                 <div class="section-header"><h3>💼 İş elanı</h3><button class="btn btn-outline btn-sm" onclick="state.createMode=null;renderCreate()"><i class="fas fa-arrow-left"></i> Geri</button></div>
-                <div class="payment-info"><i class="fas fa-info-circle"></i><div class="text"><strong>Elan haqqı:</strong> Normal ${PRICES.JOB_NORMAL} AZN • VIP ${PRICES.JOB_VIP} AZN • PRO ${PRICES.JOB_PROVIP} AZN<br>Ödəniş: <strong>${PAYMENT_NUMBER}</strong><br><span style="color:var(--warning);">14 gün qüvvədədir.</span></div></div>
+                ${premium ? `
+                    <div class="payment-info" style="background:#d1fae5;border-color:#10b981;">
+                        <i class="fas fa-check-circle" style="color:#059669;"></i>
+                        <div class="text" style="color:#065f46;">
+                            <strong>${activeSub ? '✅ Abunəlik aktiv' : '🎁 Pulsuz sınaq aktiv'}</strong><br>
+                            Elan dərhal yayımlanacaq. Ödəniş yoxdur.
+                        </div>
+                    </div>
+                ` : `
+                    <div class="payment-info" style="background:#fef3c7;border-color:#fde68a;">
+                        <i class="fas fa-tag" style="color:#d97706;"></i>
+                        <div class="text" style="color:#92400e;">
+                            <strong>Pulsuz müddət bitdi.</strong><br>
+                            Elan haqqı: Normal <strong>${PRICES.JOB_NORMAL} AZN</strong> • VIP <strong>${PRICES.JOB_VIP} AZN</strong><br>
+                            Ödəniş: <strong>${PAYMENT_NUMBER}</strong>
+                        </div>
+                    </div>
+                `}
                 <form id="createForm" onsubmit="submitEmployerCreate(event)">
                     <div class="form-group"><label class="form-label">Başlıq</label><input type="text" class="form-input" id="createTitle" required></div>
                     <div class="form-group"><label class="form-label">Təsvir</label><textarea class="form-textarea" id="createDescription" required></textarea></div>
@@ -836,15 +991,16 @@
                     <div class="form-group"><label class="form-label">Rayon</label><div class="form-input" onclick="openDistrictPicker()" style="cursor:pointer;display:flex;justify-content:space-between;"><span id="districtText">${state.selectedDistrict||'Seçin...'}</span><i class="fas fa-chevron-down"></i></div></div>
                     <div class="form-group"><label class="form-label">Qiymət</label><input type="text" class="form-input" id="createPrice" required></div>
                     <div class="form-group"><label class="form-label">Əlaqə nömrəniz</label><input type="tel" class="form-input" id="createPhone" value="${state.currentUser.phone||''}" required></div>
-                    <div class="form-group"><label class="form-label">Elan növü</label>
-                        <div class="pricing-grid" style="grid-template-columns:1fr 1fr 1fr;">
-                            <div class="pricing-card ${state.selectedPlan==='normal'?'selected':''}" onclick="selectPlan('normal', this)"><div class="name">Normal</div><div class="price" style="font-size:18px;">${PRICES.JOB_NORMAL} AZN</div></div>
-                            <div class="pricing-card ${state.selectedPlan==='vip'?'selected':''}" onclick="selectPlan('vip', this)"><div class="name">VIP</div><div class="price" style="font-size:18px;">${PRICES.JOB_VIP} AZN</div></div>
-                            <div class="pricing-card ${state.selectedPlan==='provip'?'selected':''}" onclick="selectPlan('provip', this)"><div class="name">PRO</div><div class="price" style="font-size:18px;">${PRICES.JOB_PROVIP} AZN</div></div>
+                    ${!premium ? `
+                        <div class="form-group"><label class="form-label">Elan növü</label>
+                            <div class="pricing-grid" style="grid-template-columns:1fr 1fr;">
+                                <div class="pricing-card ${state.selectedPlan==='normal'?'selected':''}" onclick="selectPlan('normal', this)"><div class="name">Normal</div><div class="price" style="font-size:18px;">${PRICES.JOB_NORMAL} AZN</div></div>
+                                <div class="pricing-card ${state.selectedPlan==='vip'?'selected':''}" onclick="selectPlan('vip', this)"><div class="name">VIP</div><div class="price" style="font-size:18px;">${PRICES.JOB_VIP} AZN</div></div>
+                            </div>
                         </div>
-                    </div>
+                    ` : ''}
                     <div class="form-group"><label style="display:flex;align-items:center;gap:8px;font-size:14px;"><input type="checkbox" id="createUrgent" style="width:18px;height:18px;"> Təcili elan</label></div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Yerləşdir</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> ${premium ? 'Dərhal yayımla' : 'Ödəniş et və yerləşdir'}</button>
                 </form>
             `;
         }
@@ -854,27 +1010,53 @@
         function openCategoryPicker() {
             const items = [];
             for (const [group, cats] of Object.entries(CATEGORIES)) {
-                items.push(`<div class="category-group"><div class="category-group-title"><i class="fas fa-folder"></i> ${group}</div><div class="category-items">${cats.map(c => `<div class="category-item ${state.selectedCategory===c?'selected':''}" onclick="selectCategory('${c}')">${c}</div>`).join('')}</div></div>`);
+                items.push(`<div class="category-group"><div class="category-group-title"><i class="fas fa-folder"></i> ${group}</div><div class="category-items">${cats.map(c => `<div class="category-item ${state.selectedCategory===c?'selected':''}" onclick="selectCategory('${c.replace(/'/g, "\\'")}')">${c}</div>`).join('')}</div></div>`);
             }
-            items.push(`<div class="category-group"><div class="category-items"><div class="category-item" onclick="selectCategory('özün daxil et')" style="background:var(--primary-light);color:var(--primary);font-weight:600;"><i class="fas fa-plus"></i> özün daxil et</div></div></div>`);
+            items.push(`<div class="category-group"><div class="category-items"><div class="category-item" onclick="selectCategory('custom')" style="background:var(--primary-light);color:var(--primary);font-weight:600;"><i class="fas fa-plus"></i> özün daxil et</div></div></div>`);
             openModal(`<div class="modal-header"><h2>Kateqoriya seç</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="category-scroll">${items.join('')}</div>`);
         }
 
         function selectCategory(cat) {
-            if (cat === 'özün daxil et') { const c = prompt('Kateqoriya adı:'); if (c && c.trim()) { state.selectedCategory = c.trim(); document.getElementById('categoryText').textContent = c.trim(); } }
-            else { state.selectedCategory = cat; document.getElementById('categoryText').textContent = cat; }
+            if (cat === 'custom') {
+                const c = prompt('Kateqoriya adı:');
+                if (c && c.trim()) {
+                    state.selectedCategory = c.trim();
+                    const el = document.getElementById('categoryText');
+                    if (el) el.textContent = c.trim();
+                }
+            } else {
+                state.selectedCategory = cat;
+                const el = document.getElementById('categoryText');
+                if (el) el.textContent = cat;
+            }
             closeModal();
         }
 
         function openDistrictPicker() {
             openModal(`<div class="modal-header"><h2>Rayon seç</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="category-scroll"><div class="category-items">${DISTRICTS.map(d => `<div class="category-item ${state.selectedDistrict===d?'selected':''}" onclick="selectDistrict('${d}')" style="width:100%;text-align:left;padding:10px 14px;margin-bottom:4px;">${d}</div>`).join('')}</div></div>`);
         }
-        function selectDistrict(d) { state.selectedDistrict = d; document.getElementById('districtText').textContent = d; closeModal(); }
+        function selectDistrict(d) {
+            state.selectedDistrict = d;
+            const el = document.getElementById('districtText');
+            if (el) el.textContent = d;
+            closeModal();
+        }
 
+        // ==================== ✅ YENİ: USTA ELANI - DƏRHAL YAYIMLANIR ====================
         function submitMasterCreate(e) {
             e.preventDefault();
-            const activeSub = getActiveSubscription(state.currentUser);
-            if (!activeSub) { showToast('Abunəlik tələb olunur!', 'danger'); return; }
+            const user = state.currentUser;
+            const premium = isPremium(user);
+            const activeSub = getActiveSubscription(user);
+            
+            // Əgər premium deyilsə abunə tələb et
+            if (!premium) {
+                showToast('Pulsuz müddət bitdi! Abunəlik lazımdır.', 'warning');
+                state.selectedPlan = 'weekly';
+                requestSubscription();
+                return;
+            }
+            
             const title = document.getElementById('createTitle').value.trim();
             const description = document.getElementById('createDescription').value.trim();
             const price = document.getElementById('createPrice').value.trim();
@@ -882,35 +1064,107 @@
             const experience = document.getElementById('createExperience').value.trim();
             const workingHours = document.getElementById('createWorkingHours').value.trim();
             const about = document.getElementById('createAbout').value.trim();
+            
             if (!state.selectedCategory) { showToast('Kateqoriya seçin!', 'danger'); return; }
             if (!state.selectedDistrict) { showToast('Rayon seçin!', 'danger'); return; }
-            DB.jobs.push({ id: 'j'+Date.now(), title, description, category: state.selectedCategory, district: state.selectedDistrict, price, phone, experience, workingHours, about, type: 'master', urgent: false, vip: false, proVip: false, authorId: state.currentUser.id, authorName: state.currentUser.name, createdAt: Date.now(), expiresAt: activeSub.expiresAt, status: 'approved' });
-            state.currentUser.phone = phone;
-            if (state.currentUser.type !== 'master') state.currentUser.type = 'master';
+            
+            // Elanın bitmə vaxtı: abunə varsa abunənin bitmə tarixi, yoxsa trial-ın bitmə tarixi
+            const expiresAt = activeSub ? activeSub.expiresAt : getTrialExpiry(user);
+            
+            const newJob = {
+                id: 'j'+Date.now(),
+                title, description,
+                category: state.selectedCategory,
+                district: state.selectedDistrict,
+                price, phone, experience, workingHours, about,
+                type: 'master',
+                urgent: false, vip: false, proVip: false,
+                authorId: user.id,
+                authorName: user.name,
+                createdAt: Date.now(),
+                expiresAt: expiresAt,
+                status: 'approved'  // ✅ DƏRHAL YAYIMLANIR — admin təsdiqi YOX
+            };
+            
+            DB.jobs.push(newJob);
+            user.phone = phone;
+            if (user.type !== 'master') user.type = 'master';
             DB.save();
-            state.createMode = null; state.selectedCategory = ''; state.selectedDistrict = '';
-            showToast('Usta elanınız yerləşdirildi!', 'success');
+            
+            state.createMode = null; 
+            state.selectedCategory = ''; 
+            state.selectedDistrict = '';
+            
+            showToast('✅ Elanınız dərhal yayımlandı!', 'success');
             navigateTo('masters');
         }
 
+        // ==================== ✅ YENİ: İŞ ELANI - DƏRHAL YAYIMLANIR ====================
         function submitEmployerCreate(e) {
             e.preventDefault();
+            const user = state.currentUser;
+            const premium = isPremium(user);
+            
             const title = document.getElementById('createTitle').value.trim();
             const description = document.getElementById('createDescription').value.trim();
             const price = document.getElementById('createPrice').value.trim();
             const phone = document.getElementById('createPhone').value.trim();
             const urgent = document.getElementById('createUrgent').checked;
+            
             if (!state.selectedCategory) { showToast('Kateqoriya seçin!', 'danger'); return; }
             if (!state.selectedDistrict) { showToast('Rayon seçin!', 'danger'); return; }
-            DB.jobs.push({ id: 'j'+Date.now(), title, description, category: state.selectedCategory, district: state.selectedDistrict, price, phone, type: 'job', urgent, vip: state.selectedPlan === 'vip', proVip: state.selectedPlan === 'provip', authorId: state.currentUser.id, authorName: state.currentUser.name, createdAt: Date.now(), expiresAt: null, status: 'pending' });
-            const amount = state.selectedPlan === 'provip' ? PRICES.JOB_PROVIP : state.selectedPlan === 'vip' ? PRICES.JOB_VIP : PRICES.JOB_NORMAL;
-            DB.payments.push({ id: 'p'+Date.now(), userId: state.currentUser.id, userName: state.currentUser.name, amount, type: 'job_post', plan: state.selectedPlan, status: 'pending', createdAt: Date.now(), paymentNumber: PAYMENT_NUMBER });
-            state.currentUser.phone = phone;
-            if (state.currentUser.type !== 'employer' && state.currentUser.type !== 'master') state.currentUser.type = 'employer';
+            
+            // Premium deyilsə → ödəniş tələb et (admin təsdiqi lazım)
+            if (!premium) {
+                const amount = state.selectedPlan === 'vip' ? PRICES.JOB_VIP : PRICES.JOB_NORMAL;
+                DB.jobs.push({
+                    id: 'j'+Date.now(), title, description,
+                    category: state.selectedCategory,
+                    district: state.selectedDistrict,
+                    price, phone, type: 'job', urgent,
+                    vip: state.selectedPlan === 'vip', proVip: false,
+                    authorId: user.id, authorName: user.name,
+                    createdAt: Date.now(), expiresAt: null,
+                    status: 'pending'  // ⚠️ Ödəniş təsdiqi gözləyir (yalnız admin)
+                });
+                DB.payments.push({
+                    id: 'p'+Date.now(),
+                    userId: user.id, userName: user.name,
+                    amount, type: 'job_post', plan: state.selectedPlan,
+                    status: 'pending', createdAt: Date.now(),
+                    paymentNumber: PAYMENT_NUMBER
+                });
+                user.phone = phone;
+                if (user.type !== 'employer' && user.type !== 'master') user.type = 'employer';
+                DB.save();
+                sendAdminNotification('💰 Yeni elan ödənişi!', `${user.name} tərəfindən ${amount} AZN`);
+                state.createMode = null; state.selectedCategory = ''; state.selectedDistrict = ''; state.selectedPlan = 'normal';
+                showToast('Elan yaradıldı! Ödəniş təsdiqini gözləyin.', 'success');
+                navigateTo('home');
+                return;
+            }
+            
+            // ✅ Premium → dərhal yayımlanır (təsdiq gözləmir)
+            DB.jobs.push({
+                id: 'j'+Date.now(), title, description,
+                category: state.selectedCategory,
+                district: state.selectedDistrict,
+                price, phone, type: 'job', urgent,
+                vip: false, proVip: false,
+                authorId: user.id, authorName: user.name,
+                createdAt: Date.now(),
+                expiresAt: Date.now() + JOB_EXPIRY_MS,  // 14 gün
+                status: 'approved'  // ✅ DƏRHAL
+            });
+            user.phone = phone;
+            if (user.type !== 'employer' && user.type !== 'master') user.type = 'employer';
             DB.save();
-            sendAdminNotification('💰 Yeni ödəniş gözləyir!', `${state.currentUser.name} tərəfindən ${amount} AZN (Elan haqqı)`);
+            
+            // Premium istifadəçilərə bildiriş
+            sendNotificationToMasters(DB.jobs[DB.jobs.length - 1]);
+            
             state.createMode = null; state.selectedCategory = ''; state.selectedDistrict = ''; state.selectedPlan = 'normal';
-            showToast('Elan yerləşdirildi! Admin təsdiqini gözləyin.', 'success');
+            showToast('✅ Elanınız dərhal yayımlandı!', 'success');
             navigateTo('home');
         }
 
@@ -920,14 +1174,13 @@
             openModal(`
                 <div class="modal-header"><h2>${plan==='monthly'?'Aylıq':'Həftəlik'} abunəlik</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
                 <div style="text-align:center;padding:20px;background:var(--gray-100);border-radius:12px;margin-bottom:16px;"><div style="font-size:36px;font-weight:800;color:var(--primary);">${amount} AZN</div><div style="font-size:13px;color:var(--gray-500);margin-top:4px;">${plan==='monthly'?'30 gün':'7 gün'}</div></div>
-                <div class="payment-info" style="margin-bottom:16px;"><i class="fas fa-mobile-alt"></i><div class="text">Ödənişi <strong>${PAYMENT_NUMBER}</strong> nömrəsinə (m10) göndərin.<br>Sonra aşağıdakı düyməni basın.</div></div>
+                <div class="payment-info" style="margin-bottom:16px;"><i class="fas fa-mobile-alt"></i><div class="text">Ödənişi <strong>${PAYMENT_NUMBER}</strong> nömrəsinə göndərin.<br>Sonra aşağıdakı düyməni basın.</div></div>
                 <button class="btn btn-primary" onclick="confirmSubscriptionPayment('${plan}', ${amount})"><i class="fas fa-check"></i> Ödəniş etdim</button>
             `);
         }
 
         function confirmSubscriptionPayment(plan, amount) {
-            const duration = plan === 'monthly' ? MONTH_MS : WEEK_MS;
-            DB.subscriptions.push({ id: 's'+Date.now(), userId: state.currentUser.id, userName: state.currentUser.name, plan, amount, status: 'pending', createdAt: Date.now(), expiresAt: Date.now() + duration, paymentNumber: PAYMENT_NUMBER });
+            DB.subscriptions.push({ id: 's'+Date.now(), userId: state.currentUser.id, userName: state.currentUser.name, plan, amount, status: 'pending', createdAt: Date.now(), expiresAt: Date.now() + (plan==='monthly'?MONTH_MS:WEEK_MS), paymentNumber: PAYMENT_NUMBER });
             DB.payments.push({ id: 'p'+Date.now(), userId: state.currentUser.id, userName: state.currentUser.name, amount, type: 'subscription', plan, status: 'pending', createdAt: Date.now(), paymentNumber: PAYMENT_NUMBER });
             DB.save();
             sendAdminNotification('💰 Yeni abunəlik ödənişi!', `${state.currentUser.name} tərəfindən ${amount} AZN (${plan==='monthly'?'Aylıq':'Həftəlik'})`);
@@ -940,8 +1193,11 @@
             const content = document.getElementById('mainContent');
             const user = state.currentUser;
             const userJobs = DB.jobs.filter(j => j.authorId === user.id);
-            const userPayments = DB.payments.filter(p => p.userId === user.id);
             const activeSub = getActiveSubscription(user);
+            const trialActive = isTrialActive(user);
+            const trialExpired = isTrialExpired(user);
+            const daysLeft = getTrialDaysLeft(user);
+            
             content.innerHTML = `
                 <div class="tg-user-info">
                     <div class="tg-avatar">${(user.name||'?').charAt(0).toUpperCase()}</div>
@@ -951,22 +1207,53 @@
                         <div class="stars" style="margin-top:4px;">${renderStars(user.rating||0)} <span style="font-size:11px;color:var(--gray-400);margin-left:4px;">(${user.ratingCount||0} rəy)</span></div>
                     </div>
                 </div>
-                ${activeSub ? `<div style="margin-bottom:16px;"><span class="sub-badge"><i class="fas fa-crown"></i> Aktiv abunəlik: ${activeSub.plan==='monthly'?'Aylıq':'Həftəlik'}</span><div style="font-size:11px;color:var(--gray-500);margin-top:6px;">Bitir: ${formatDate(activeSub.expiresAt)}</div></div>` : `<div style="margin-bottom:16px;"><span class="sub-badge warning"><i class="fas fa-exclamation-triangle"></i> Abunəlik yoxdur</span></div>`}
-                ${state.isAdmin ? `<div class="admin-stats"><div class="stat-card"><div class="stat-value">${DB.users.length}</div><div class="stat-label">İstifadəçi</div></div><div class="stat-card"><div class="stat-value">${DB.jobs.length}</div><div class="stat-label">Elan</div></div><div class="stat-card"><div class="stat-value">${DB.payments.filter(p=>p.status==='pending').length}</div><div class="stat-label">Gözləyən</div></div><div class="stat-card"><div class="stat-value">${DB.subscriptions.filter(s=>s.status==='pending').length}</div><div class="stat-label">Abunə</div></div></div>` : ''}
+                
+                ${activeSub ? `
+                    <div class="trial-banner" style="background:linear-gradient(135deg,#10b981,#059669);">
+                        <i class="fas fa-crown"></i>
+                        <div class="text">
+                            <h4>Aktiv abunəlik: ${activeSub.plan==='monthly'?'Aylıq':'Həftəlik'}</h4>
+                            <p>Bitir: ${formatDate(activeSub.expiresAt)}</p>
+                        </div>
+                    </div>
+                ` : trialActive ? `
+                    <div class="trial-banner ${daysLeft <= 3 ? 'warning' : ''}">
+                        <i class="fas fa-gift"></i>
+                        <div class="text">
+                            <h4>🎁 ${daysLeft} gün pulsuz qaldı</h4>
+                            <p>Bitir: ${formatDate(getTrialExpiry(user))}</p>
+                        </div>
+                    </div>
+                ` : `
+                    <div class="trial-banner expired">
+                        <i class="fas fa-hourglass-end"></i>
+                        <div class="text">
+                            <h4>Pulsuz müddət bitdi</h4>
+                            <p>Davam etmək üçün abunəlik alın</p>
+                        </div>
+                    </div>
+                `}
+                
+                ${state.isAdmin ? `<div class="admin-stats"><div class="stat-card"><div class="stat-value">${DB.users.length}</div><div class="stat-label">İstifadəçi</div></div><div class="stat-card"><div class="stat-value">${DB.jobs.length}</div><div class="stat-label">Elan</div></div><div class="stat-card"><div class="stat-value">${DB.payments.filter(p=>p.status==='pending').length}</div><div class="stat-label">Gözləyən ödəniş</div></div><div class="stat-card"><div class="stat-value">${DB.subscriptions.filter(s=>s.status==='pending').length}</div><div class="stat-label">Gözləyən abunə</div></div></div>` : ''}
+                
                 <div class="section-header"><h3>Mənim elanlarım</h3></div>
                 ${userJobs.length === 0 ? `<div class="empty-state"><i class="fas fa-file-alt"></i><p>Elan yoxdur</p></div>` : userJobs.map(job => {
                     const rem = getRemainingTime(job); const expired = isExpired(job);
+                    const statusText = expired ? 'BİTİB' : job.status==='approved' ? 'Aktiv' : job.status==='pending' ? 'Ödəniş gözləyir' : 'Rədd';
+                    const statusCls = expired||job.status==='rejected' ? 'status-rejected' : job.status==='pending' ? 'status-pending' : 'status-approved';
                     return `<div class="job-card" style="margin-bottom:8px;" onclick="showJobDetail('${job.id}')">
                         <div class="job-title" style="font-size:14px;">${job.title}</div>
-                        <div class="job-location"><i class="fas fa-map-marker-alt"></i> ${job.district} <span class="payment-status ${job.status==='approved'?'status-approved':job.status==='pending'?'status-pending':'status-rejected'}">${expired?'BİTİB':job.status==='approved'?'Aktiv':job.status==='pending'?'Gözləyir':'Rədd'}</span></div>
+                        <div class="job-location"><i class="fas fa-map-marker-alt"></i> ${job.district} <span class="payment-status ${statusCls}">${statusText}</span></div>
                         ${rem && !expired ? `<div class="expiry-info ${rem.cls}"><i class="fas fa-hourglass-half"></i> ${rem.text}</div>` : ''}
                     </div>`;
                 }).join('')}
+                
                 <div class="section-header" style="margin-top:20px;"><h3>Abunəlik planları</h3></div>
                 <div class="pricing-grid">
                     <div class="pricing-card" onclick="quickSubscription('weekly')"><div class="name">Həftəlik</div><div class="price">${PRICES.SUBSCRIPTION_WEEKLY} AZN</div><div class="period">7 gün</div></div>
                     <div class="pricing-card" onclick="quickSubscription('monthly')"><div class="name">Aylıq</div><div class="price">${PRICES.SUBSCRIPTION_MONTHLY} AZN</div><div class="period">30 gün</div></div>
                 </div>
+                
                 ${state.isAdmin ? `<button class="btn btn-primary" onclick="navigateTo('admin')" style="margin-top:16px;"><i class="fas fa-shield-alt"></i> Admin panel</button>` : ''}
                 <button class="btn btn-outline" onclick="logout()" style="margin-top:12px;color:var(--danger);border-color:var(--danger);"><i class="fas fa-sign-out-alt"></i> Çıxış</button>
             `;
@@ -999,6 +1286,13 @@
             if (!state.isAdmin) { content.innerHTML = `<div class="empty-state"><i class="fas fa-lock"></i><p>İcazə yoxdur</p></div>`; return; }
             content.innerHTML = `
                 <div class="section-header"><h3>🛡️ Admin Panel</h3><button class="btn btn-outline btn-sm" onclick="navigateTo('profile')"><i class="fas fa-arrow-left"></i> Geri</button></div>
+                <div class="payment-info" style="background:#dbeafe;border-color:#93c5fd;">
+                    <i class="fas fa-info-circle"></i>
+                    <div class="text" style="color:#1e40af;">
+                        <strong>Yalnız ödənişləri təsdiqləyin.</strong><br>
+                        Elanlar artıq avtomatik yayımlanır. Admin yoxlaması lazım deyil.
+                    </div>
+                </div>
                 <div class="admin-stats">
                     <div class="stat-card"><div class="stat-value">${DB.users.length}</div><div class="stat-label">İstifadəçi</div></div>
                     <div class="stat-card"><div class="stat-value">${DB.jobs.length}</div><div class="stat-label">Elan</div></div>
@@ -1008,7 +1302,6 @@
                 <div class="tabs">
                     <button class="tab active" onclick="switchAdminTab('payments', event)">💰 Ödənişlər</button>
                     <button class="tab" onclick="switchAdminTab('subscriptions', event)">👑 Abunələr</button>
-                    <button class="tab" onclick="switchAdminTab('jobs', event)">📋 Elanlar</button>
                     <button class="tab" onclick="switchAdminTab('contacts', event)">📞 Əlaqələr</button>
                     <button class="tab" onclick="switchAdminTab('users', event)">👥 İstifadəçilər</button>
                 </div>
@@ -1058,25 +1351,6 @@
                         </div>
                     `).join('')}
                 `;
-            } else if (tab === 'jobs') {
-                const pending = DB.jobs.filter(j => j.status === 'pending');
-                el.innerHTML = `
-                    <div class="section-header"><h3>Gözləyən elanlar</h3><span style="font-size:13px;color:var(--warning);font-weight:600;">${pending.length}</span></div>
-                    ${pending.length === 0 ? `<div class="empty-state"><i class="fas fa-check-circle"></i><p>Gözləyən yoxdur</p></div>` : pending.map(j => `
-                        <div class="job-card" style="margin-bottom:8px;">
-                            <div class="job-title" style="font-size:14px;">${j.title}</div>
-                            <div class="job-location"><i class="fas fa-map-marker-alt"></i> ${j.district} • ${j.category}</div>
-                            <div class="job-description">${j.description}</div>
-                            <div class="job-footer">
-                                <div class="job-price">${j.price}</div>
-                                <div style="display:flex;gap:6px;">
-                                    <button class="btn-icon" onclick="approveJob('${j.id}')" style="background:var(--success);color:white;border:none;width:32px;height:32px;"><i class="fas fa-check"></i></button>
-                                    <button class="btn-icon" onclick="rejectJobPrompt('${j.id}')" style="background:var(--danger);color:white;border:none;width:32px;height:32px;"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                `;
             } else if (tab === 'contacts') {
                 const pending = DB.contacts.filter(c => c.status === 'pending');
                 el.innerHTML = `
@@ -1096,9 +1370,15 @@
             } else if (tab === 'users') {
                 el.innerHTML = `
                     <div class="section-header"><h3>İstifadəçilər</h3><span style="font-size:13px;color:var(--gray-500);">${DB.users.length}</span></div>
-                    ${DB.users.map(u => { const sub = getActiveSubscription(u); return `
+                    ${DB.users.map(u => { 
+                        const sub = getActiveSubscription(u); 
+                        const trial = isTrialActive(u);
+                        return `
                         <div class="admin-list-item">
-                            <div class="info"><h4>${u.name} ${u.banned?'<span style="color:var(--danger);font-size:11px;">(BAN)</span>':''}</h4><p>${u.phone||'Tel yoxdur'} • ${u.type}${sub?` • <span style="color:var(--success);">Abunə</span>`:''}</p></div>
+                            <div class="info">
+                                <h4>${u.name} ${u.banned?'<span style="color:var(--danger);font-size:11px;">(BAN)</span>':''}</h4>
+                                <p>${u.phone||'Tel yoxdur'} • ${u.type}${sub?` • <span style="color:var(--success);">Abunə</span>`:trial?` • <span style="color:#8b5cf6;">Trial (${getTrialDaysLeft(u)} gün)</span>`:''}</p>
+                            </div>
                             <div style="display:flex;gap:6px;">
                                 ${u.banned?`<button class="btn-icon" onclick="unbanUser('${u.id}')" style="background:var(--success);color:white;border:none;width:32px;height:32px;"><i class="fas fa-unlock"></i></button>`:`<button class="btn-icon" onclick="banUser('${u.id}')" style="background:var(--danger);color:white;border:none;width:32px;height:32px;"><i class="fas fa-ban"></i></button>`}
                             </div>
@@ -1135,7 +1415,7 @@
 
         function openCategoryFilter() {
             const items = [];
-            for (const [group, cats] of Object.entries(CATEGORIES)) { items.push(`<div class="category-group"><div class="category-group-title"><i class="fas fa-folder"></i> ${group}</div><div class="category-items">${cats.map(c => `<div class="category-item ${state.filters.category===c?'selected':''}" onclick="applyCategoryFilter('${c}')">${c}</div>`).join('')}</div></div>`); }
+            for (const [group, cats] of Object.entries(CATEGORIES)) { items.push(`<div class="category-group"><div class="category-group-title"><i class="fas fa-folder"></i> ${group}</div><div class="category-items">${cats.map(c => `<div class="category-item ${state.filters.category===c?'selected':''}" onclick="applyCategoryFilter('${c.replace(/'/g, "\\'")}')">${c}</div>`).join('')}</div></div>`); }
             openModal(`<div class="modal-header"><h2>Kateqoriya seç</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div style="margin-bottom:12px;"><div class="category-item ${!state.filters.category?'selected':''}" onclick="applyCategoryFilter('')" style="width:100%;text-align:center;padding:10px;"><i class="fas fa-globe"></i> Hamısı</div></div><div class="category-scroll">${items.join('')}</div>`);
         }
         function applyCategoryFilter(c) { state.filters.category = c; closeModal(); if (state.currentPage === 'jobs') renderJobs(); else if (state.currentPage === 'masters') renderMasters(); else renderHome(); }
@@ -1217,7 +1497,7 @@
             openModal(`
                 <div class="modal-header"><h2>Əlaqə ödənişi</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
                 <div style="text-align:center;padding:20px;background:var(--gray-100);border-radius:12px;margin-bottom:16px;"><div style="font-size:36px;font-weight:800;color:var(--primary);">${PRICES.CONTACT_FEE} AZN</div></div>
-                <div class="payment-info" style="margin-bottom:16px;"><i class="fas fa-mobile-alt"></i><div class="text">Ödənişi <strong>${PAYMENT_NUMBER}</strong> nömrəsinə (m10) göndərin.</div></div>
+                <div class="payment-info" style="margin-bottom:16px;"><i class="fas fa-mobile-alt"></i><div class="text">Ödənişi <strong>${PAYMENT_NUMBER}</strong> nömrəsinə göndərin.</div></div>
                 <button class="btn btn-primary" onclick="confirmContactPayment('${jobId}')"><i class="fas fa-check"></i> Ödəniş etdim</button>
             `);
         }
@@ -1230,7 +1510,7 @@
             DB.save();
             sendAdminNotification('💰 Yeni əlaqə ödənişi!', `${state.currentUser.name} tərəfindən ${PRICES.CONTACT_FEE} AZN`);
             closeModal();
-            showToast('Ödəniş göndərildi!', 'success');
+            showToast('Ödəniş göndərildi! Admin təsdiqini gözləyin.', 'success');
         }
 
         function openChat(userId) {
@@ -1240,7 +1520,7 @@
             openModal(`
                 <div class="modal-header"><h2>${otherUser.name}</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
                 <div id="chatMessages" style="max-height:300px;overflow-y:auto;margin-bottom:16px;padding:8px;">
-                    ${messages.length === 0 ? `<div class="empty-state" style="padding:20px;"><i class="fas fa-comment-dots"></i><p>Söhbətə başlayın</p></div>` : messages.map(m => `<div style="display:flex;justify-content:${m.fromId===state.currentUser.id?'flex-end':'flex-start'};margin-bottom:8px;"><div style="max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px;background:${m.fromId===state.currentUser.id?'var(--primary)':'var(--gray-100)'};color:${m.fromId===state.currentUser.id?'white':'var(--gray-800)'};border-bottom-right-radius:${m.fromId===state.currentUser.id?'4px':'16px'};border-bottom-left-radius:${m.fromId===state.currentUser.id?'16px':'4px'};">${m.text}</div></div>`).join('')}
+                    ${messages.length === 0 ? `<div class="empty-state" style="padding:20px;"><i class="fas fa-comment-dots"></i><p>Söhbətə başlayın</p></div>` : messages.map(m => `<div style="display:flex;justify-content:${m.fromId===state.currentUser.id?'flex-end':'flex-start'};margin-bottom:8px;"><div style="max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px;background:${m.fromId===state.currentUser.id?'var(--primary)':'var(--gray-100)'};color:${m.fromId===state.currentUser.id?'white':'var(--gray-800)'};">${m.text}</div></div>`).join('')}
                 </div>
                 <div style="display:flex;gap:8px;">
                     <input type="text" class="form-input" id="chatInput" placeholder="Mesaj..." style="flex:1;">
@@ -1261,17 +1541,65 @@
             openChat(toId);
         }
 
-        function approvePayment(id) { const p = DB.payments.find(p => p.id === id); if (p) { p.status = 'approved'; DB.save(); sendNotification(p.userId, '✅ Ödəniş təsdiqləndi!', `${p.amount} AZN`, 'payment_approved'); showToast('Təsdiqləndi!'); renderAdminTab('payments'); } }
+        // ==================== ADMIN FUNKSİYALARI ====================
+        function approvePayment(id) { 
+            const p = DB.payments.find(p => p.id === id); 
+            if (p) { 
+                p.status = 'approved'; 
+                // Əgər bu bir job_post ödənişidirsə, elanı təsdiqlə
+                if (p.type === 'job_post') {
+                    const pendingJob = DB.jobs.find(j => j.authorId === p.userId && j.status === 'pending');
+                    if (pendingJob) {
+                        pendingJob.status = 'approved';
+                        pendingJob.expiresAt = Date.now() + JOB_EXPIRY_MS;
+                        sendNotificationToMasters(pendingJob);
+                    }
+                }
+                // Əgər subscription ödənişidirsə, abunəliyi aktivləşdir
+                if (p.type === 'subscription') {
+                    const pendingSub = DB.subscriptions.find(s => s.userId === p.userId && s.status === 'pending');
+                    if (pendingSub) {
+                        pendingSub.status = 'active';
+                        const u = DB.users.find(u => u.id === p.userId);
+                        if (u) {
+                            if (!u.subscriptions) u.subscriptions = [];
+                            u.subscriptions.push({ plan: pendingSub.plan, status: 'active', expiresAt: Date.now() + (pendingSub.plan==='monthly'?MONTH_MS:WEEK_MS) });
+                            if (u.type !== 'master') u.type = 'master';
+                        }
+                    }
+                }
+                // Əgər contact ödənişidirsə, əlaqəni təsdiqlə
+                if (p.type === 'contact') {
+                    const pendingContact = DB.contacts.find(c => c.userId === p.userId && c.status === 'pending');
+                    if (pendingContact) pendingContact.status = 'approved';
+                }
+                DB.save(); 
+                sendNotification(p.userId, '✅ Ödəniş təsdiqləndi!', `${p.amount} AZN`, 'payment_approved'); 
+                showToast('Təsdiqləndi!'); 
+                renderAdminTab('payments'); 
+            } 
+        }
         function rejectPaymentPrompt(id) { openModal(`<div class="modal-header"><h2>Rədd səbəbi</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="form-group"><input type="text" class="form-input" id="rejectReason" placeholder="Səbəb"></div><button class="btn btn-danger" onclick="rejectPaymentWithReason('${id}')">Rədd et</button>`); }
         function rejectPaymentWithReason(id) { const reason = document.getElementById('rejectReason').value.trim(); const p = DB.payments.find(p => p.id === id); if (p) { p.status = 'rejected'; p.rejectReason = reason || 'Göstərilməyib'; DB.save(); sendNotification(p.userId, '❌ Ödəniş rədd edildi', `Səbəb: ${p.rejectReason}`, 'payment_rejected'); closeModal(); showToast('Rədd edildi!', 'danger'); renderAdminTab('payments'); } }
 
-        function approveSubscription(id) { const s = DB.subscriptions.find(s => s.id === id); if (s) { s.status = 'active'; const u = DB.users.find(u => u.id === s.userId); if (u) { if (!u.subscriptions) u.subscriptions = []; u.subscriptions.push({ plan: s.plan, status: 'active', expiresAt: Date.now() + (s.plan==='monthly'?MONTH_MS:WEEK_MS) }); if (u.type !== 'master') u.type = 'master'; } DB.save(); sendNotification(s.userId, '👑 Abunəlik aktivləşdirildi!', `${s.plan==='monthly'?'Aylıq':'Həftəlik'}`, 'subscription_approved'); showToast('Aktivləşdirildi!'); renderAdminTab('subscriptions'); } }
+        function approveSubscription(id) { 
+            const s = DB.subscriptions.find(s => s.id === id); 
+            if (s) { 
+                s.status = 'active'; 
+                const u = DB.users.find(u => u.id === s.userId); 
+                if (u) { 
+                    if (!u.subscriptions) u.subscriptions = []; 
+                    u.subscriptions.push({ plan: s.plan, status: 'active', expiresAt: Date.now() + (s.plan==='monthly'?MONTH_MS:WEEK_MS) }); 
+                    if (u.type !== 'master') u.type = 'master'; 
+                } 
+                DB.save(); 
+                sendNotification(s.userId, '👑 Abunəlik aktivləşdirildi!', `${s.plan==='monthly'?'Aylıq':'Həftəlik'}`, 'subscription_approved'); 
+                showToast('Aktivləşdirildi!'); 
+                renderAdminTab('subscriptions'); 
+            } 
+        }
         function rejectSubscriptionPrompt(id) { openModal(`<div class="modal-header"><h2>Rədd səbəbi</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="form-group"><input type="text" class="form-input" id="rejectSubReason" placeholder="Səbəb"></div><button class="btn btn-danger" onclick="rejectSubscriptionWithReason('${id}')">Rədd et</button>`); }
         function rejectSubscriptionWithReason(id) { const reason = document.getElementById('rejectSubReason').value.trim(); const s = DB.subscriptions.find(s => s.id === id); if (s) { s.status = 'rejected'; s.rejectReason = reason || 'Göstərilməyib'; DB.save(); sendNotification(s.userId, '❌ Abunəlik rədd edildi', `Səbəb: ${s.rejectReason}`, 'subscription_rejected'); closeModal(); showToast('Rədd edildi!', 'danger'); renderAdminTab('subscriptions'); } }
-
-        function approveJob(id) { const j = DB.jobs.find(j => j.id === id); if (j) { j.status = 'approved'; if (j.type === 'job' && !j.expiresAt) j.expiresAt = Date.now() + JOB_EXPIRY_MS; if (j.type === 'master') { const a = DB.users.find(u => u.id === j.authorId); const s = a ? getActiveSubscription(a) : null; if (s) j.expiresAt = s.expiresAt; } DB.save(); if (j.type === 'job') sendNotificationToMasters(j); sendNotification(j.authorId, '✅ Elan təsdiqləndi!', `"${j.title}"`, 'job_approved'); showToast('Təsdiqləndi!'); renderAdminTab('jobs'); } }
-        function rejectJobPrompt(id) { openModal(`<div class="modal-header"><h2>Rədd səbəbi</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="form-group"><input type="text" class="form-input" id="rejectJobReason" placeholder="Səbəb"></div><button class="btn btn-danger" onclick="rejectJobWithReason('${id}')">Rədd et</button>`); }
-        function rejectJobWithReason(id) { const reason = document.getElementById('rejectJobReason').value.trim(); const j = DB.jobs.find(j => j.id === id); if (j) { j.status = 'rejected'; j.rejectReason = reason || 'Göstərilməyib'; DB.save(); sendNotification(j.authorId, '❌ Elan rədd edildi', `Səbəb: ${j.rejectReason}`, 'job_rejected'); closeModal(); showToast('Rədd edildi!', 'danger'); renderAdminTab('jobs'); } }
 
         function approveContact(id) { const c = DB.contacts.find(c => c.id === id); if (c) { c.status = 'approved'; DB.save(); sendNotification(c.userId, '✅ Əlaqə təsdiqləndi!', `"${c.jobTitle}"`, 'contact_approved'); showToast('Təsdiqləndi!'); renderAdminTab('contacts'); } }
         function rejectContactPrompt(id) { openModal(`<div class="modal-header"><h2>Rədd səbəbi</h2><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div><div class="form-group"><input type="text" class="form-input" id="rejectContactReason" placeholder="Səbəb"></div><button class="btn btn-danger" onclick="rejectContactWithReason('${id}')">Rədd et</button>`); }
@@ -1301,28 +1629,21 @@
 
         function openModal(content) { document.getElementById('modalSheet').innerHTML = content; document.getElementById('modalOverlay').classList.add('active'); }
         function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
-        function logout() { if (tg) tg.close(); else showToast('Demo rejim', 'danger'); }
+        function logout() { if (tg) tg.close(); else showToast('Demo rejim', 'warning'); }
 
+        // ==================== EVENT LISTENERS ====================
         document.querySelectorAll('.nav-item').forEach(item => { item.addEventListener('click', () => navigateTo(item.dataset.page)); });
         document.getElementById('modalOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
         document.getElementById('notificationBtn').addEventListener('click', () => { showNotifications(); });
         document.getElementById('profileBtn').addEventListener('click', () => { navigateTo('profile'); });
-
         document.addEventListener('visibilitychange', () => { state.appVisible = !document.hidden; });
         window.addEventListener('focus', () => { state.appVisible = true; });
         window.addEventListener('blur', () => { state.appVisible = false; });
 
-        navigateTo('home');
-        updateNotifBadge();
-
-        if (tg?.themeParams) { const root = document.documentElement; if (tg.themeParams.bg_color) root.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color); }
-
-        setInterval(() => { if (state.currentPage === 'home') renderHome(); updateNotifBadge(); }, 60000);
-
+        // ==================== WINDOW-A FUNKSİYALARI ƏLAVƏ ET ====================
         Object.assign(window, {
             navigateTo, setFilter, toggleUrgent, showJobDetail, handleContact,
-            openChat, sendMessage, approvePayment, rejectPayment, approveJob, rejectJob,
-            approveSubscription, rejectSubscription, approveContact, rejectContact,
+            openChat, sendMessage, approvePayment, approveSubscription, approveContact,
             banUser, unbanUser, openReviewModal, setRating, submitReview,
             switchAdminTab, closeModal, logout, showToast,
             openDistrictFilter, applyDistrictFilter, openCategoryFilter, applyCategoryFilter,
@@ -1330,12 +1651,89 @@
             requestSubscription, confirmSubscriptionPayment, requestContactPayment,
             confirmContactPayment, showPhoneNumber, startCreate, selectPlan,
             submitMasterCreate, submitEmployerCreate, quickSubscription, showNotifications,
-            markNotificationRead, showLockedJobInfo,
+            markNotificationRead, showLockedJobInfo, renderAdminTab, renderCreate,
+            renderHome, renderJobs, renderMasters, renderMessages, renderProfile, renderAdmin,
             rejectPaymentPrompt, rejectPaymentWithReason,
             rejectSubscriptionPrompt, rejectSubscriptionWithReason,
-            rejectJobPrompt, rejectJobWithReason,
-            rejectContactPrompt, rejectContactWithReason
+            rejectContactPrompt, rejectContactWithReason,
+            isPremium, isInFreeTrial, isTrialActive, isTrialExpired, getTrialDaysLeft,
+            state, DB
         });
+
+        // ==================== BAŞLAT ====================
+        (async () => {
+            console.log('🚀 UstaYanı başladılır...');
+            
+            // 1️⃣ Buluddan yüklə
+            await DB.load();
+            
+            // 2️⃣ İstifadəçini tanı
+            if (tg?.initDataUnsafe?.user) {
+                const tgUser = tg.initDataUnsafe.user;
+                const userId = tgUser.id.toString();
+                let existing = DB.users.find(u => u.id === userId);
+                
+                if (!existing) {
+                    // ✅ YENİ İSTİFADƏÇİ - 14 GÜN PULSUZ BAŞLAT
+                    existing = {
+                        id: userId,
+                        name: tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : ''),
+                        username: tgUser.username,
+                        phone: null,
+                        type: 'user',
+                        banned: false,
+                        rating: 0,
+                        ratingCount: 0,
+                        subscriptions: [],
+                        joinedAt: Date.now()  // 🎁 TRIAL BAŞLANGICI
+                    };
+                    DB.users.push(existing);
+                    DB.save();
+                    console.log('🎁 Yeni istifadəçi - 14 gün pulsuz başladı:', existing.name);
+                    
+                    // Xoş gəlmisiniz bildirişi
+                    setTimeout(() => {
+                        sendNotification(existing.id, '🎁 14 GÜN PULSUZ!', 
+                            'Xoş gəldiniz! İlk 14 gün ərzində bütün xidmətlər pulsuzdur. Elan verə, usta tapa, əlaqə saxlaya bilərsiniz.',
+                            'welcome');
+                    }, 1000);
+                } else {
+                    // Mövcud istifadəçi — joinedAt yoxdursa indi əlavə et
+                    if (!existing.joinedAt) {
+                        existing.joinedAt = Date.now();
+                        DB.save();
+                    }
+                }
+                state.currentUser = existing;
+            } else {
+                // Demo rejim
+                if (DB.users.length === 0) DB.seed();
+                state.currentUser = DB.users[0];
+                if (state.currentUser && !state.currentUser.joinedAt) {
+                    state.currentUser.joinedAt = Date.now();
+                    DB.save();
+                }
+            }
+            
+            // 3️⃣ Admin yoxla
+            if (state.currentUser?.id === ADMIN_TELEGRAM_ID) state.isAdmin = true;
+            
+            // 4️⃣ İlk render
+            navigateTo('home');
+            updateNotifBadge();
+            state.initialized = true;
+            
+            // 5️⃣ Polling başlat
+            DB.startPolling();
+            
+            // 6️⃣ Theme
+            if (tg?.themeParams) { 
+                const root = document.documentElement; 
+                if (tg.themeParams.bg_color) root.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color); 
+            }
+            
+            console.log('✅ Hazırdır!');
+        })();
     </script>
 </body>
-</html>
+    </html>
