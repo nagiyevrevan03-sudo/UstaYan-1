@@ -83,6 +83,7 @@
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
         .modal-overlay.active { display: flex; }
         .modal-sheet { background: var(--tg-theme-bg-color); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px 20px; padding-bottom: max(24px, env(safe-area-inset-bottom)); animation: slideUp 0.3s ease; max-height: 90vh; overflow-y: auto; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .modal-header h2 { font-size: 20px; font-weight: 700; }
@@ -190,6 +191,7 @@
             <div class="logo-text">Usta<span>Yanı</span></div>
         </div>
         <div class="header-actions">
+            <button id="refreshBtn" title="Yenilə"><i class="fas fa-sync-alt"></i></button>
             <button id="notificationBtn"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge" style="display:none;">0</span></button>
             <button id="profileBtn"><i class="fas fa-user"></i></button>
         </div>
@@ -257,7 +259,7 @@
         const DB = {
             users: [], jobs: [], messages: [], payments: [],
             reviews: [], subscriptions: [], contacts: [], notifications: [],
-            _saving: false, _loading: false,
+            _saving: false, _loading: false, _lastSaveHash: '',
 
             async load() {
                 if (this._loading) return;
@@ -272,17 +274,21 @@
                         const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
                             headers: { 'X-Master-Key': JSONBIN_API_KEY }
                         });
-                        const data = await res.json();
-                        const d = data.record || {};
-                        if (d.users) this.users = d.users;
-                        if (d.jobs) this.jobs = d.jobs;
-                        if (d.messages) this.messages = d.messages;
-                        if (d.payments) this.payments = d.payments;
-                        if (d.reviews) this.reviews = d.reviews;
-                        if (d.subscriptions) this.subscriptions = d.subscriptions;
-                        if (d.contacts) this.contacts = d.contacts;
-                        if (d.notifications) this.notifications = d.notifications;
-                        console.log('☁️ Buluddan yükləndi');
+                        if (res.status === 429) {
+                            console.warn('⚠️ JSONBin limit dolub!');
+                        } else {
+                            const data = await res.json();
+                            const d = data.record || {};
+                            if (d.users) this.users = d.users;
+                            if (d.jobs) this.jobs = d.jobs;
+                            if (d.messages) this.messages = d.messages;
+                            if (d.payments) this.payments = d.payments;
+                            if (d.reviews) this.reviews = d.reviews;
+                            if (d.subscriptions) this.subscriptions = d.subscriptions;
+                            if (d.contacts) this.contacts = d.contacts;
+                            if (d.notifications) this.notifications = d.notifications;
+                            console.log('☁️ Buluddan yükləndi');
+                        }
                     } catch(e) {
                         console.error('❌ Bulud yükləmə xətası:', e);
                     }
@@ -305,6 +311,13 @@
 
             save() {
                 // LocalStorage-a dərhal yaz
+                const payload = {
+                    users: this.users, jobs: this.jobs,
+                    messages: this.messages, payments: this.payments,
+                    reviews: this.reviews, subscriptions: this.subscriptions,
+                    contacts: this.contacts, notifications: this.notifications
+                };
+                
                 localStorage.setItem('uy_users', JSON.stringify(this.users));
                 localStorage.setItem('uy_jobs', JSON.stringify(this.jobs));
                 localStorage.setItem('uy_messages', JSON.stringify(this.messages));
@@ -317,30 +330,37 @@
                 // Buluda 2 saniyə sonra (debounce)
                 if (!CLOUD_ENABLED) return;
                 if (this._saving) return;
+                
+                // ✅ Yalnız dəyişiklik olsa göndər
+                const newHash = JSON.stringify(payload).length + '_' + JSON.stringify(payload).substring(0, 100);
+                if (newHash === this._lastSaveHash) {
+                    console.log('💾 Dəyişiklik yoxdur, buluda göndərilmədi');
+                    return;
+                }
+                
                 this._saving = true;
                 setTimeout(async () => {
                     try {
-                        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                        const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Master-Key': JSONBIN_API_KEY
                             },
-                            body: JSON.stringify({
-                                users: this.users, jobs: this.jobs,
-                                messages: this.messages, payments: this.payments,
-                                reviews: this.reviews, subscriptions: this.subscriptions,
-                                contacts: this.contacts, notifications: this.notifications
-                            })
+                            body: JSON.stringify(payload)
                         });
-                        console.log('☁️ Buluda saxlanıldı');
+                        if (res.status === 429) {
+                            console.warn('⚠️ JSONBin limit dolub!');
+                        } else {
+                            this._lastSaveHash = newHash;
+                            console.log('☁️ Buluda saxlanıldı');
+                        }
                     } catch(e) { console.error('❌ Save xətası:', e); }
                     this._saving = false;
                 }, 2000);
             },
 
             seed() {
-                // Yalnız tam boşdursa nümunə data
                 if (this.users.length > 0 || this.jobs.length > 0) return;
                 const now = Date.now();
                 this.users = [
@@ -354,17 +374,40 @@
                 this.save();
             },
 
+            // ✅ OPTİMALLAŞDIRILMIŞ POLLING: 5 dəqiqə + ağıllı skip
             startPolling() {
                 if (!CLOUD_ENABLED) return;
+                
+                // İstifadəçi aktivliyini izlə
+                let lastActive = Date.now();
+                ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => {
+                    document.addEventListener(evt, () => { lastActive = Date.now(); }, { passive: true });
+                });
+                
+                // 📊 Sorğu sayğacı (debug üçün)
+                let requestCount = 0;
+                const startTime = Date.now();
+                
                 setInterval(async () => {
                     if (this._saving || this._loading) return;
+                    
+                    // İstifadəçi aktiv deyilsə → 3x dəfə az yoxla
+                    const inactive = Date.now() - lastActive > 60000;
+                    if (inactive && Math.random() > 0.33) return;
+                    
+                    requestCount++;
+                    const elapsed = (Date.now() - startTime) / 60000;
+                    if (requestCount % 5 === 0) {
+                        console.log(`📊 Polling: ${requestCount} sorğu / ${elapsed.toFixed(1)} dəq`);
+                    }
+                    
                     await this.load();
                     if (state.currentPage === 'home') renderHome();
                     else if (state.currentPage === 'jobs') renderJobs();
                     else if (state.currentPage === 'masters') renderMasters();
                     else if (state.currentPage === 'messages') renderMessages();
                     updateNotifBadge();
-                }, 30000);
+                }, 300000);  // ✅ 5 DƏQİQƏ
             }
         };
 
@@ -383,8 +426,6 @@
         };
 
         // ==================== 🎁 TRIAL FUNKSİYALARI ====================
-        
-        // İstifadəçinin qoşulma tarixini təyin et (ilk dəfə)
         function ensureUserJoinedAt(user) {
             if (!user.joinedAt) {
                 user.joinedAt = Date.now();
@@ -392,55 +433,32 @@
             }
             return user;
         }
-
-        // Trial bitmə vaxtı
         function getTrialExpiry(user) {
             if (!user.joinedAt) return 0;
             return user.joinedAt + TRIAL_MS;
         }
-
-        // Trial aktivdir?
         function isTrialActive(user) {
             if (!user || !user.joinedAt) return false;
             return Date.now() < getTrialExpiry(user);
         }
-
-        // Trial bitib?
         function isTrialExpired(user) {
             if (!user || !user.joinedAt) return false;
             return Date.now() >= getTrialExpiry(user);
         }
-
-        // Trial qalan günlər
         function getTrialDaysLeft(user) {
             if (!user || !user.joinedAt) return 0;
             const rem = getTrialExpiry(user) - Date.now();
             if (rem <= 0) return 0;
             return Math.ceil(rem / (24 * 60 * 60 * 1000));
         }
-
-        // İstifadəçi pulsuz rejimdədir? (trial aktiv VƏ abunə yoxdur)
         function isInFreeTrial(user) {
             if (!user) return false;
             if (hasActiveSubscription(user)) return false;
             return isTrialActive(user);
         }
-
-        // İstifadəçi premium? (abunə var VƏ YA trial aktiv)
         function isPremium(user) {
             if (!user) return false;
             return hasActiveSubscription(user) || isTrialActive(user);
-        }
-
-        // İstifadəçinin trial-ını başlat (yeni istifadəçi üçün)
-        function startTrialForUser(user) {
-            if (!user.joinedAt) {
-                user.joinedAt = Date.now();
-                DB.save();
-                console.log('🎁 Trial başladı:', user.name);
-                sendNotification(user.id, '🎁 14 GÜN PULSUZ!', 
-                    'Xoş gəldiniz! İlk 14 gün ərzində bütün xidmətlər pulsuzdur. Elan verə, usta tapа, əlaqə saxlaya bilərsiniz.');
-            }
         }
 
         // ==================== HELPERS ====================
@@ -490,8 +508,6 @@
             if (hours > 0) return { text: hours + ' saat qalıb', cls: 'warning' };
             return { text: 'Tezliklə bitir', cls: 'danger' };
         }
-
-        // ✅ YENİ: İstifadəçi elana baxa bilər? (Premium = abunə VƏ YA trial)
         function canViewJobElan(user, job) {
             if (!user) return false;
             if (job.authorId === user.id) return true;
@@ -499,12 +515,10 @@
             if (isPremium(user)) return true;
             return false;
         }
-
-        // ✅ YENİ: Əlaqə üçün ödəniş lazımdır? (trial varsa yox)
         function needsContactPayment(user, job) {
             if (!user || !job) return false;
             if (job.authorId === user.id) return false;
-            if (isPremium(user)) return false;  // premium = abunə VƏ YA trial
+            if (isPremium(user)) return false;
             if (isUserMaster(user)) return false;
             if (hasPaidContact(user.id, job.id)) return false;
             if (job.type === 'job' && user.type === 'employer') return false;
@@ -571,7 +585,6 @@
             const user = state.currentUser;
             if (!user) return '';
             
-            // Abunə varsa trial banner göstərmə
             if (hasActiveSubscription(user)) {
                 const sub = getActiveSubscription(user);
                 return `<div class="trial-banner" style="background:linear-gradient(135deg,#10b981,#059669);">
@@ -583,7 +596,6 @@
                 </div>`;
             }
             
-            // Trial bitibsə
             if (isTrialExpired(user)) {
                 return `<div class="trial-banner expired">
                     <i class="fas fa-hourglass-end"></i>
@@ -594,7 +606,6 @@
                 </div>`;
             }
             
-            // Trial aktivdirsə
             const daysLeft = getTrialDaysLeft(user);
             const cls = daysLeft <= 3 ? 'warning' : '';
             return `<div class="trial-banner ${cls}">
@@ -912,7 +923,6 @@
             const user = state.currentUser;
             const premium = isPremium(user);
             const activeSub = getActiveSubscription(user);
-            const trialActive = isTrialActive(user);
 
             content.innerHTML = `
                 <div class="section-header">
@@ -1042,14 +1052,12 @@
             closeModal();
         }
 
-        // ==================== ✅ YENİ: USTA ELANI - DƏRHAL YAYIMLANIR ====================
         function submitMasterCreate(e) {
             e.preventDefault();
             const user = state.currentUser;
             const premium = isPremium(user);
             const activeSub = getActiveSubscription(user);
             
-            // Əgər premium deyilsə abunə tələb et
             if (!premium) {
                 showToast('Pulsuz müddət bitdi! Abunəlik lazımdır.', 'warning');
                 state.selectedPlan = 'weekly';
@@ -1068,7 +1076,6 @@
             if (!state.selectedCategory) { showToast('Kateqoriya seçin!', 'danger'); return; }
             if (!state.selectedDistrict) { showToast('Rayon seçin!', 'danger'); return; }
             
-            // Elanın bitmə vaxtı: abunə varsa abunənin bitmə tarixi, yoxsa trial-ın bitmə tarixi
             const expiresAt = activeSub ? activeSub.expiresAt : getTrialExpiry(user);
             
             const newJob = {
@@ -1083,7 +1090,7 @@
                 authorName: user.name,
                 createdAt: Date.now(),
                 expiresAt: expiresAt,
-                status: 'approved'  // ✅ DƏRHAL YAYIMLANIR — admin təsdiqi YOX
+                status: 'approved'
             };
             
             DB.jobs.push(newJob);
@@ -1099,7 +1106,6 @@
             navigateTo('masters');
         }
 
-        // ==================== ✅ YENİ: İŞ ELANI - DƏRHAL YAYIMLANIR ====================
         function submitEmployerCreate(e) {
             e.preventDefault();
             const user = state.currentUser;
@@ -1114,7 +1120,6 @@
             if (!state.selectedCategory) { showToast('Kateqoriya seçin!', 'danger'); return; }
             if (!state.selectedDistrict) { showToast('Rayon seçin!', 'danger'); return; }
             
-            // Premium deyilsə → ödəniş tələb et (admin təsdiqi lazım)
             if (!premium) {
                 const amount = state.selectedPlan === 'vip' ? PRICES.JOB_VIP : PRICES.JOB_NORMAL;
                 DB.jobs.push({
@@ -1125,7 +1130,7 @@
                     vip: state.selectedPlan === 'vip', proVip: false,
                     authorId: user.id, authorName: user.name,
                     createdAt: Date.now(), expiresAt: null,
-                    status: 'pending'  // ⚠️ Ödəniş təsdiqi gözləyir (yalnız admin)
+                    status: 'pending'
                 });
                 DB.payments.push({
                     id: 'p'+Date.now(),
@@ -1144,7 +1149,6 @@
                 return;
             }
             
-            // ✅ Premium → dərhal yayımlanır (təsdiq gözləmir)
             DB.jobs.push({
                 id: 'j'+Date.now(), title, description,
                 category: state.selectedCategory,
@@ -1153,14 +1157,13 @@
                 vip: false, proVip: false,
                 authorId: user.id, authorName: user.name,
                 createdAt: Date.now(),
-                expiresAt: Date.now() + JOB_EXPIRY_MS,  // 14 gün
-                status: 'approved'  // ✅ DƏRHAL
+                expiresAt: Date.now() + JOB_EXPIRY_MS,
+                status: 'approved'
             });
             user.phone = phone;
             if (user.type !== 'employer' && user.type !== 'master') user.type = 'employer';
             DB.save();
             
-            // Premium istifadəçilərə bildiriş
             sendNotificationToMasters(DB.jobs[DB.jobs.length - 1]);
             
             state.createMode = null; state.selectedCategory = ''; state.selectedDistrict = ''; state.selectedPlan = 'normal';
@@ -1195,7 +1198,6 @@
             const userJobs = DB.jobs.filter(j => j.authorId === user.id);
             const activeSub = getActiveSubscription(user);
             const trialActive = isTrialActive(user);
-            const trialExpired = isTrialExpired(user);
             const daysLeft = getTrialDaysLeft(user);
             
             content.innerHTML = `
@@ -1388,7 +1390,16 @@
             }
         }
 
-        function navigateTo(page) {
+        async function navigateTo(page) {
+            // ☁️ Hər səhifə keçidində buluddan təzə data çək
+            if (CLOUD_ENABLED && !DB._loading && !DB._saving) {
+                try { 
+                    await DB.load(); 
+                } catch(e) { 
+                    console.error('Nav load xətası:', e); 
+                }
+            }
+            
             state.currentPage = page;
             document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.page === page));
             updateNotifBadge();
@@ -1541,12 +1552,10 @@
             openChat(toId);
         }
 
-        // ==================== ADMIN FUNKSİYALARI ====================
         function approvePayment(id) { 
             const p = DB.payments.find(p => p.id === id); 
             if (p) { 
                 p.status = 'approved'; 
-                // Əgər bu bir job_post ödənişidirsə, elanı təsdiqlə
                 if (p.type === 'job_post') {
                     const pendingJob = DB.jobs.find(j => j.authorId === p.userId && j.status === 'pending');
                     if (pendingJob) {
@@ -1555,7 +1564,6 @@
                         sendNotificationToMasters(pendingJob);
                     }
                 }
-                // Əgər subscription ödənişidirsə, abunəliyi aktivləşdir
                 if (p.type === 'subscription') {
                     const pendingSub = DB.subscriptions.find(s => s.userId === p.userId && s.status === 'pending');
                     if (pendingSub) {
@@ -1568,7 +1576,6 @@
                         }
                     }
                 }
-                // Əgər contact ödənişidirsə, əlaqəni təsdiqlə
                 if (p.type === 'contact') {
                     const pendingContact = DB.contacts.find(c => c.userId === p.userId && c.status === 'pending');
                     if (pendingContact) pendingContact.status = 'approved';
@@ -1629,11 +1636,42 @@
 
         function openModal(content) { document.getElementById('modalSheet').innerHTML = content; document.getElementById('modalOverlay').classList.add('active'); }
         function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+        
+        // ✅ YENİ: Refresh funksiyası
+        async function refreshData() {
+            if (!CLOUD_ENABLED) {
+                showToast('Bulud aktiv deyil', 'warning');
+                return;
+            }
+            
+            const btn = document.getElementById('refreshBtn');
+            const icon = btn?.querySelector('i');
+            if (icon) icon.style.animation = 'spin 1s linear infinite';
+            
+            showToast('🔄 Yenilənir...', 'warning');
+            
+            try {
+                await DB.load();
+                if (state.currentPage === 'home') renderHome();
+                else if (state.currentPage === 'jobs') renderJobs();
+                else if (state.currentPage === 'masters') renderMasters();
+                else if (state.currentPage === 'messages') renderMessages();
+                else if (state.currentPage === 'profile') renderProfile();
+                updateNotifBadge();
+                showToast('✅ Yeniləndi!', 'success');
+            } catch(e) {
+                showToast('❌ Xəta baş verdi', 'danger');
+            }
+            
+            if (icon) icon.style.animation = '';
+        }
+        
         function logout() { if (tg) tg.close(); else showToast('Demo rejim', 'warning'); }
 
         // ==================== EVENT LISTENERS ====================
         document.querySelectorAll('.nav-item').forEach(item => { item.addEventListener('click', () => navigateTo(item.dataset.page)); });
         document.getElementById('modalOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
+        document.getElementById('refreshBtn')?.addEventListener('click', refreshData);
         document.getElementById('notificationBtn').addEventListener('click', () => { showNotifications(); });
         document.getElementById('profileBtn').addEventListener('click', () => { navigateTo('profile'); });
         document.addEventListener('visibilitychange', () => { state.appVisible = !document.hidden; });
@@ -1642,6 +1680,7 @@
 
         // ==================== WINDOW-A FUNKSİYALARI ƏLAVƏ ET ====================
         Object.assign(window, {
+            refreshData,
             navigateTo, setFilter, toggleUrgent, showJobDetail, handleContact,
             openChat, sendMessage, approvePayment, approveSubscription, approveContact,
             banUser, unbanUser, openReviewModal, setRating, submitReview,
@@ -1674,7 +1713,6 @@
                 let existing = DB.users.find(u => u.id === userId);
                 
                 if (!existing) {
-                    // ✅ YENİ İSTİFADƏÇİ - 14 GÜN PULSUZ BAŞLAT
                     existing = {
                         id: userId,
                         name: tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : ''),
@@ -1685,20 +1723,18 @@
                         rating: 0,
                         ratingCount: 0,
                         subscriptions: [],
-                        joinedAt: Date.now()  // 🎁 TRIAL BAŞLANGICI
+                        joinedAt: Date.now()
                     };
                     DB.users.push(existing);
                     DB.save();
-                    console.log('🎁 Yeni istifadəçi - 14 gün pulsuz başladı:', existing.name);
+                    console.log('🎁 Yeni istifadəçi - 14 gün pulsuz:', existing.name);
                     
-                    // Xoş gəlmisiniz bildirişi
                     setTimeout(() => {
                         sendNotification(existing.id, '🎁 14 GÜN PULSUZ!', 
-                            'Xoş gəldiniz! İlk 14 gün ərzində bütün xidmətlər pulsuzdur. Elan verə, usta tapa, əlaqə saxlaya bilərsiniz.',
+                            'Xoş gəldiniz! İlk 14 gün ərzində bütün xidmətlər pulsuzdur.',
                             'welcome');
                     }, 1000);
                 } else {
-                    // Mövcud istifadəçi — joinedAt yoxdursa indi əlavə et
                     if (!existing.joinedAt) {
                         existing.joinedAt = Date.now();
                         DB.save();
@@ -1706,7 +1742,6 @@
                 }
                 state.currentUser = existing;
             } else {
-                // Demo rejim
                 if (DB.users.length === 0) DB.seed();
                 state.currentUser = DB.users[0];
                 if (state.currentUser && !state.currentUser.joinedAt) {
@@ -1736,4 +1771,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
